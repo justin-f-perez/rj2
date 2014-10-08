@@ -18,7 +18,11 @@ To get started:
 
 3) Next, install the project dependencies to your virtual environment by running __pip install -r requirements.txt__ from the project root folder.
 
+4) Now you can set up the databse, just run __./manage.py syncdb__ from your project root. It may ask you if you'd like to create a superuser account, it is up to you if you want to or not.
 
+5) To see the website in action, you first have to start the development server. Just run __./manage.py runserver__ to get it started. The development server will automatically handle any changes you make to the application while the dev. server is running __except for changes to the models (in models.py)__.
+
+6) With the development server running, you should be able to navigate to http://127.0.0.1/login to see the login page.
 
 Project structure:
 rj2/tests.py -- contains automated tests. These can be executed by running __./manage.py test rj2__
