@@ -6,7 +6,7 @@ Contributing Members:
 
 Joseph Kirkpatrick
 
-Justin Perez
+Justin Perez(Leader)
 
 Runjin Wang
 
