@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':
         'login.html'}),
     url(r'^$', views.homepage),
-    url(r'^editaccount/$', views.editaccount),
-    url(r'^changepassword/$', views.changepassword),
+    url(r'^accounts/profile/$', views.editaccount),
+    url(r'^accounts/changepassword/$', views.changepassword),
 )
