@@ -47,4 +47,6 @@ root/accounts/signup/ -- account registration
 
 root/accounts/password/reset -- password reset
 
-root/accounts/password/change
+root/accounts/password/change -- change password
+
+root/accounts/email -- add/remove email addresses or change primary email
