@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Signin</title>
+
+<link href="css/style.css" rel="stylesheet" type="text/css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+	<!---header--->
+    <div class="header">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt=""/></a>
+        </div>
+        <div class="signin">
+            <ul>
+                <!--
+                 {% if user_login %}
+                 <li><a href="#">Hello, {{ person_name }}</a></li>
+                 <li class="b"></li>
+                 {% else %}
+                 --->
+                <li><a href="signin.html">Signin</a></li>
+                <li class="a"><h6>or</h6></li>
+                <li class="b"><a href="signup.html">Signup</a></li>
+                <div class="clear"> </div>
+                <!---{% endif %}--->
+            </ul>
+        </div>
+        <div class="clear"> </div>
+    </div>
+<!-- start main -->
+<div class="top_bg">
+<div class="main_top">
+	<h4 class="style">create an account or login</h4>
+</div>
+</div>
+<div class="main_bg">
+<div class="main">
+	<div class="login_left">
+		<h3>new customers</h3>
+		<p>If you don't have an account, please register now.</p>
+		<div class="btn">
+			<form>
+				<input type="button"  onclick="location.href='signup.html';" value="Resgiter Now"/>
+			</form>
+		</div>
+	</div>
+	<div class="login_left">
+		<h3>registered customers</h3>
+		<p>if you have any account, please log in.</p>
+	<!-- start registration -->
+	<div class="registration">
+	<div class="registration_left">
+		 <div class="registration_form">
+		 <!-- Form -->
+			<form id="registration_form" action="{% url 'django.contrib.auth.views.login' %}">
+				<div>
+					<label>
+						<input placeholder="email:" type="email" tabindex="3" required="">
+					</label>
+				</div>
+				<div>
+					<label>
+						<input placeholder="password" type="password" tabindex="4" required="">
+					</label>
+				</div>
+                <!--
+                 {% if form.errors %}
+                 <p style="color:red">
+                 Invalid Input
+                 </p>
+                 <!---{% endif %}--->
+				<div>
+					<input type="submit" value="sign in" id="register-submit">
+				</div>
+				<div class="forget">
+					<a href="#">forgot your password</a>
+				</div>
+			</form>
+			<!-- /Form -->
+		</div>
+	</div>
+	</div>
+	<!-- end registration -->
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+
+</body>
+</html>
