@@ -22,7 +22,7 @@ To get started:
 
 5) To see the website in action, you first have to start the development server. Just run __./manage.py runserver__ to get it started. The development server will automatically handle any changes you make to the application while the dev. server is running __except for changes to the models (in models.py)__.
 
-6) With the development server running, you should be able to navigate to http://127.0.0.1/login to see the login page.
+6) With the development server running, you should be able to navigate to http://127.0.0.1:8000/accounts/login to see the login page.
 
 Project structure:
 
@@ -46,3 +46,5 @@ root/accounts/logout/ -- logout link
 root/accounts/signup/ -- account registration
 
 root/accounts/password/reset -- password reset
+
+root/accounts/password/change
