@@ -25,6 +25,7 @@ To get started:
 6) With the development server running, you should be able to navigate to http://127.0.0.1/login to see the login page.
 
 Project structure:
+
 rj2/tests.py -- contains automated tests. These can be executed by running __./manage.py test rj2__
 
 rj2/urls.py -- contains all of the URL routing logic for the application
@@ -32,3 +33,16 @@ rj2/urls.py -- contains all of the URL routing logic for the application
 rj2/settings.py -- contains all of the application-wide settings
 
 rj2/views.py -- contains all of the view logic for the application.
+
+
+URLS:
+
+root/ -- homepage
+
+root/accounts/login/ -- login page
+
+root/accounts/logout/ -- logout link
+
+root/accounts/signup/ -- account registration
+
+root/accounts/password/reset -- password reset
