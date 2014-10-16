@@ -3,7 +3,8 @@
 <head>
 <title>Signup</title>
 
-<link href="css/style.css" rel="stylesheet" type="text/css"/>
+{% load staticfiles %}
+<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
@@ -11,21 +12,19 @@
 	<!---header--->
     <div class="header">
         <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt=""/></a>
+		<a href="{% url 'rj2_homepage' %}"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
         </div>
         <div class="signin">
             <ul>
-                <!--
-                 {% if user_login %}
+                 {% if user.is_authenticated %}
                  <li><a href="#">Hello, {{ person_name }}</a></li>
                  <li class="b"></li>
                  {% else %}
-                 --->
-                <li><a href="signin.html">Signin</a></li>
+		 <li><a href="{% url 'account_login' %}">Signin</a></li>
                 <li class="a"><h6>or</h6></li>
-                <li class="b"><a href="signup.html">Signup</a></li>
+		<li class="b"><a href="{% url 'account_signup' %}">Signup</a></li>
                 <div class="clear"> </div>
-                <!---{% endif %}--->
+		{% endif %}
             </ul>
         </div>
         <div class="clear"> </div>
@@ -48,7 +47,8 @@
 	<div class="registration_left">
 		 <div class="registration_form">
 		 <!-- Form -->
-			<form id="registration_form" action="" method="post">
+		 <form id="login_form" action="{% url 'account_login' %}" method="post">
+			 {% csrf_token %}
 				<div>
 					<label>
 						<input placeholder="email:" type="email" tabindex="3" required="">
@@ -63,7 +63,7 @@
 					<input type="submit" value="sign in" id="register-submit">
 				</div>
 				<div class="forget">
-					<a href="#">forgot your password</a>
+					<a href="{% url 'account_reset_password' %}">forgot your password</a>
 				</div>
 			</form>
 			<!-- /Form -->
@@ -78,8 +78,8 @@
 		<div class="registration_left">
         <div class="registration_form">
 		 <!-- Form -->
-			<form id="registration_form" action="{% url 'django.contrib.auth.views.regist' %}">
-				<div>
+			<form id="registration_form" action="{% url 'account_signup' %}">
+				<!--<div>
 					<label>
 						<input placeholder="first name:" type="text" tabindex="1" required="" autofocus="">
 					</label>
@@ -104,12 +104,17 @@
 						<input placeholder="retype password" type="password" tabindex="4" required="">
 					</label>
 				</div>
-                <!--
+				-->
+				{% csrf_token %}
+				{{form.as_P }}
                  {% if form.errors %}
                 <p style="color:red">
                     Invalid Input
                 </p>
-                 <!---{% endif %}--->
+		{% endif %}
+		{% if redirect_field_value %}
+		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+		{% endif %}
 				<div>
 					<input type="submit" value="create an account" id="register-submit">
 				</div>

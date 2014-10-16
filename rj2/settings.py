@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+
 SITE_ID = 1
 
 TEMPLATE_CONTEXT_PROCESSORS = (
