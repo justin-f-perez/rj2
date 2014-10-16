@@ -78,7 +78,7 @@
 		<div class="registration_left">
         <div class="registration_form">
 		 <!-- Form -->
-			<form id="registration_form" action="{% url 'account_signup' %}">
+			<form id="signup_form" action="{% url 'account_signup' %}" method="post">
 				<!--<div>
 					<label>
 						<input placeholder="first name:" type="text" tabindex="1" required="" autofocus="">
@@ -106,10 +106,17 @@
 				</div>
 				-->
 				{% csrf_token %}
-				{{form.as_P }}
-                 {% if form.errors %}
+				{{ form.as_p }}
+                 {% if messages %}
                 <p style="color:red">
-                    Invalid Input
+		    	<div>
+				<strong>Messages:</strong>
+				<ul>
+				{% for message in messages %}
+					<li>{{message}}</li>
+					{% endfor %}
+				</ul>
+			</div>
                 </p>
 		{% endif %}
 		{% if redirect_field_value %}
