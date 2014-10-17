@@ -3,7 +3,8 @@
 <head>
 <title>Signin</title>
 
-<link href="css/style.css" rel="stylesheet" type="text/css"/>
+{% load staticfiles %}
+<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
@@ -11,7 +12,7 @@
 	<!---header--->
     <div class="header">
         <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt=""/></a>
+            <a href="{% url 'rj2_homepage' %}"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
         </div>
         <div class="signin">
             <ul>
@@ -23,7 +24,7 @@
                  --->
                 <li><a href="signin.html">Signin</a></li>
                 <li class="a"><h6>or</h6></li>
-                <li class="b"><a href="signup.html">Signup</a></li>
+                <li class="b"><a href={% url 'account_signup' %}>Signup</a></li>
                 <div class="clear"> </div>
                 <!---{% endif %}--->
             </ul>
@@ -43,7 +44,7 @@
 		<p>If you don't have an account, please register now.</p>
 		<div class="btn">
 			<form>
-				<input type="button"  onclick="location.href='signup.html';" value="Resgiter Now"/>
+				<input type="button"  onclick= "href = {% url 'account_signup' %}" value="Resgiter Now"/>
 			</form>
 		</div>
 	</div>
@@ -55,7 +56,8 @@
 	<div class="registration_left">
 		 <div class="registration_form">
 		 <!-- Form -->
-			<form id="registration_form" action="{% url 'django.contrib.auth.views.login' %}">
+			<form id="registration_form" action="{% url 'account_login' %}">
+			   {% csrf_token %}
 				<div>
 					<label>
 						<input placeholder="email:" type="email" tabindex="3" required="">
