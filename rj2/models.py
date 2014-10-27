@@ -73,3 +73,49 @@ class MyUser(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+class Course(models.Model):
+    def __str__(self):
+        return self.name
+    name = models.CharField(unique=True, blank=False, null=False,
+                            max_length=100)
+    description = models.TextField(blank=False, null=False)
+    fee = models.DecimalField(decimal_places=2, max_digits=20)
+    is_deprecated = models.BooleanField(blank=False, null=False, default=False)
+
+class Quiz(models.Model):
+    course = models.ForeignKey(Course)
+    title = models.CharField(blank=False, null=False, max_length=100)
+
+    def __str__(self):
+        return self.title
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz)
+    text = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.text
+
+class Answer(models.Model):
+    is_correct = models.BooleanField(blank=False, null=False, default=False)
+    question = models.ForeignKey(Question)
+    text = models.CharField(blank=False, null=False, max_length=100)
+
+    def __str__(self):
+        return self.text
+
+class LinkedContent(models.Model):
+    course = models.ForeignKey(Course)
+    URL = models.URLField(blank=False, null=False)
+    is_video = models.BooleanField(blank=False, null=False, default=False)
+    is_document = models.BooleanField(blank=False, null=False, default=True)
+
+    def __str__(self):
+        return self.URL
+
+class OfficeHours(models.Model):
+    course = models.ForeignKey(Course)
+    instructor = models.ForeignKey(MyUser)
+    start_time = models.DateTimeField(blank=False, null=False)
+    end_time = models.DateTimeField(blank=False, null=False)
