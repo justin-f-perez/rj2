@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Signin</title>
-
-<link href="css/style.css" rel="stylesheet" type="text/css"/>
+{% load staticfiles %}
+<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
@@ -11,7 +11,7 @@
 	<!---header--->
     <div class="header">
         <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt=""/></a>
+            <a href="{% url 'rj2_homepage' %}"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
         </div>
         <div class="signin">
             <ul>
@@ -21,13 +21,21 @@
                  <li class="b"></li>
                  {% else %}
                  --->
-                <li><a href="signin.html">Signin</a></li>
+                <li><a href="{% url 'account_login' %}">Signin</a></li>
                 <li class="a"><h6>or</h6></li>
-                <li class="b"><a href="signup.html">Signup</a></li>
+                <li class="b"><a href="{% url 'account_signup' %}">Signup</a></li>
                 <div class="clear"> </div>
                 <!---{% endif %}--->
             </ul>
         </div>
+        <ul id="sddm">
+            <li><a href="?">Home</a>
+            </li>
+            <li><a href="#">Course</a>
+            </li>
+            <li><a href="#">About us</a>
+            </li>
+        </ul>
         <div class="clear"> </div>
     </div>
 <!-- start main -->
@@ -43,7 +51,7 @@
 		<p>If you don't have an account, please register now.</p>
 		<div class="btn">
 			<form>
-				<input type="button"  onclick="location.href='signup.html';" value="Resgiter Now"/>
+				<input type="button"  onclick="location.href= '{% url 'account_signup' %}'" value="Resgiter Now"/>
 			</form>
 		</div>
 	</div>
@@ -55,23 +63,12 @@
 	<div class="registration_left">
 		 <div class="registration_form">
 		 <!-- Form -->
-			<form id="registration_form" action="{% url 'django.contrib.auth.views.login' %}">
-				<div>
-					<label>
-						<input placeholder="email:" type="email" tabindex="3" required="">
-					</label>
-				</div>
-				<div>
-					<label>
-						<input placeholder="password" type="password" tabindex="4" required="">
-					</label>
-				</div>
-                <!--
-                 {% if form.errors %}
-                 <p style="color:red">
-                 Invalid Input
-                 </p>
-                 <!---{% endif %}--->
+			<form id="registration_form" action="{% url 'account_login' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
 				<div>
 					<input type="submit" value="sign in" id="register-submit">
 				</div>

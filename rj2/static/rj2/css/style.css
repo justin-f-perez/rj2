@@ -27,6 +27,35 @@ body {
   background: #ffffff;
 }
 
+#sddm
+{	margin: 0 auto;
+    padding-top: 20px;
+    width: auto;
+    height:23px;
+}
+
+#sddm li
+{	margin: 0;
+    padding-left: 2px;
+    list-style: none;
+    float: left;
+}
+
+#sddm li a
+{	display: block;
+    text-align: center;
+    padding: 5px;
+    font-size:0.9em;
+    width: 70px;
+    color:#ffffff;
+    text-align: center;
+    text-decoration: none}
+
+#sddm li a:hover
+{	color:#76AE41;
+}
+
+
 
 .header {
 	background:#008FD5;
@@ -39,7 +68,7 @@ body {
 }
 .signin{
 	float:right;
-	width: 22%;
+	width: 26%;
 	position: relative;
 	margin-top: 0.5%;
 }
@@ -420,12 +449,34 @@ h4.style{
 	color:  #686C70;
 	margin: 4% 0;
 }
+.edit_center{
+    float: left;
+    width: 44.33333%;
+    margin-left: 26.3333%;
+    padding: 2%;
+    min-height: 350px;
+}
+.edit_center h3{
+    font-size: 2.4em;
+    font-weight: 700;
+    color:#3C4348;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 white;
+    border-bottom: 1px solid #E9E9E9;
+}
+.edit_center p{
+    font-size: 0.8725em;
+    line-height:1.9em;
+    color:  #686C70;
+    margin: 4% 0;
+}
 .btn form input[type="button"],.registration_form input[type="submit"]{
 	font-family: 'Microsoft yahei', sans-serif;
 	cursor:pointer;
 	background: #1371B3;
 	border: 1px solid #1371B3;
 	padding: 10px 20px;
+    margin-left: 20px;
 	outline:none;
 	color: #ffffff;
 	font-size: 0.8755em;
