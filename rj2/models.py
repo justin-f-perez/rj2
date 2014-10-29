@@ -82,6 +82,7 @@ class Course(models.Model):
     description = models.TextField(blank=False, null=False)
     fee = models.DecimalField(decimal_places=2, max_digits=20)
     is_deprecated = models.BooleanField(blank=False, null=False, default=False)
+    is_active = models.BooleanField(blank=False, null=False, default=False)
 
 class Quiz(models.Model):
     course = models.ForeignKey(Course)
