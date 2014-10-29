@@ -84,6 +84,15 @@ class Course(models.Model):
     is_deprecated = models.BooleanField(blank=False, null=False, default=False)
     is_active = models.BooleanField(blank=False, null=False, default=False)
 
+    def deprecate(self):
+        pass
+
+    def delete(self):
+        pass
+
+    def release(self):
+        pass
+
 class Quiz(models.Model):
     course = models.ForeignKey(Course)
     title = models.CharField(blank=False, null=False, max_length=100)
