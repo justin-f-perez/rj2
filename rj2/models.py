@@ -91,6 +91,9 @@ class Course(models.Model):
         pass
 
     def release(self):
+        """
+        Makes the course active and not deprecated.
+        """
         pass
 
 class Quiz(models.Model):
