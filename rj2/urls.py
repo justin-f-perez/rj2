@@ -6,4 +6,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^$', views.homepage, name="rj2_homepage"),
+    url(r'^manage_courses/', views.manage_courses, name='manage_courses'),
+    url(r'^manage_courses/pk/', views.edit_course,
+        name='edit_course'),
+    url(r'manage_courses/new/', views.add_course, name='add_course'),
 )

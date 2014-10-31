@@ -16,8 +16,8 @@
         <div class="signin">
             <ul>
                 <!--
-                 {% if user_login %}
-                 <li><a href="#">Hello, {{ person_name }}</a></li>
+                 {% if user.is_authenticated %}
+                 <li><a href="#">Hello, {{ user }}</a></li>
                  <li class="b"></li>
                  {% else %}
                  --->
