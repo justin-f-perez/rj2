@@ -48,39 +48,6 @@
 <div class="wrap">
 <div class="main">
 	<div class="login_left">
-		<h3>login customers</h3>
-		<p>if you have any account with us, please log in.</p>
-	<!-- start registration -->
-	<div class="registration">
-	<div class="registration_left">
-		 <div class="registration_form">
-		 <!-- Form -->
-		 <form id="login_form" action="{% url 'account_login' %}" method="post">
-			 {% csrf_token %}
-				<div>
-					<label>
-						<input placeholder="email:" type="email" tabindex="3" required="">
-					</label>
-				</div>
-				<div>
-					<label>
-						<input placeholder="password" type="password" tabindex="4" required="">
-					</label>
-				</div>						
-				<div>
-					<input type="submit" value="sign in" id="register-submit">
-				</div>
-				<div class="forget">
-					<a href="{% url 'account_reset_password' %}">forgot your password</a>
-				</div>
-			</form>
-			<!-- /Form -->
-		</div>
-	</div>
-	</div>
-	<!-- end registration -->
-	</div>
-	<div class="login_left">
 		<h3>register new customers</h3>
 		<p>Please finish the information below for registration.</p>
 		<div class="registration_left">
