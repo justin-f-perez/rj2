@@ -83,18 +83,36 @@ class Course(models.Model):
     fee = models.DecimalField(decimal_places=2, max_digits=20)
     is_deprecated = models.BooleanField(blank=False, null=False, default=False)
     is_active = models.BooleanField(blank=False, null=False, default=False)
+    instructors = models.ManyToManyField(MyUser)
 
     def deprecate(self):
-        pass
+        """
+        Deprecating a course causes the course to display a warning whenever a
+        student user tries to view it.
+        """
+        if self.is_active:
+            self.is_deprecated = True
+        else:
+            raise Exception("Cannot deprecate an inactive course.")
 
     def delete(self):
-        pass
+        """
+        Deleting a course causes it to become invisible to student users by
+        making it inactive.
+        """
+        if self.is_deprecated:
+            self.is_active = False
+        else:
+            raise Exception("Cannot delete a course which has not been"
+                            " deprecated.")
 
     def release(self):
         """
-        Makes the course active and not deprecated.
+        Releasing a course causes it to be visible (i.e., active) and
+        non-deprecated.
         """
-        pass
+        self.is_deprecated = False
+        self.is_active = True
 
 class Quiz(models.Model):
     course = models.ForeignKey(Course)
@@ -126,9 +144,3 @@ class LinkedContent(models.Model):
 
     def __str__(self):
         return self.URL
-
-class OfficeHours(models.Model):
-    course = models.ForeignKey(Course)
-    instructor = models.ForeignKey(MyUser)
-    start_time = models.DateTimeField(blank=False, null=False)
-    end_time = models.DateTimeField(blank=False, null=False)

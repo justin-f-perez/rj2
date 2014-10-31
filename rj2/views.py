@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
+from rj2.forms import CourseForm
 
 def logout(request):
 	return HttpResponse("You have successfully logged out of the Application")
@@ -11,10 +12,13 @@ def homepage(request):
 
 
 def manage_courses(request):
-    pass
+	return HttpResponse("Manage Courses")
+
 
 def edit_course(request, pk=None):
-    pass
+	return HttpResponse("Edit Courses")
+
 
 def add_course(request):
-    pass
+    form_class = CourseForm
+    render_to_response("addCourse.html", {'form': form_class())

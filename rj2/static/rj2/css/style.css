@@ -27,6 +27,20 @@ body {
   background: #ffffff;
 }
 
+.showresult {
+    border: 1px solid #D7DFE5;
+    width: 100%;
+    text-align: center;
+}
+
+.showresult td{
+    height:40px;
+    font-size: 0.8725em;
+    line-height:1.9em;
+    color:  #686C70;
+    margin: 4% 0;
+}
+
 #sddm
 {	margin: 0 auto;
     padding-top: 20px;
@@ -55,7 +69,33 @@ body {
 {	color:#76AE41;
 }
 
+.subneg {
+    margin-top: -20px;
+    padding-left: 25%;
+    width: auto;
+    height:23px;
+}
 
+.subneg li
+{	margin: 0;
+    padding-left: 2px;
+    list-style: none;
+    float: left;
+}
+
+.subneg li a
+{	display: block;
+    text-align: center;
+    padding: 5px;
+    font-size:0.9em;
+    width: 150px;
+    color:#ffffff;
+    text-align: center;
+    text-decoration: none}
+
+.subneg li a:hover
+{	color:#76AE41;
+}
 
 .header {
 	background:#008FD5;
@@ -502,6 +542,8 @@ h4.style{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8dc059', endColorstr='#6ba537',GradientType=0 );
 	border: 1px solid  #8dc059;
 }
+
+
 /* start registration */
 .registration{
 	margin: 4% 0;
@@ -575,7 +617,29 @@ h4.style{
 	-moz-border-radius: 6px;
 	-o-border-radius: 6px;
 }
-.registration_form input[type="text"]:focus,.registration_form input[type="email"]:focus,.registration_form input[type="tel"]:focus,.registration_form input[type="password"]:focus{
+
+.registration_form textarea{
+    padding: 10px;
+    display: block;
+    width: 96.3333%;
+    font-family: 'Microsoft yahei', sans-serif;
+    font-size: 0.8925em;
+    color:  #686C70;
+    -webkit-appearance: none;
+    text-transform: capitalize;
+    background: none;
+    border: 1px solid #86C8D5;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -o-border-radius: 6px;
+}
+
+.registration_form input[type="text"]:focus,.registration_form input[type="email"]:focus,.registration_form input[type="tel"]:focus,.registration_form input[type="password"]:focus,.registration_form textarea:focus{
 	box-shadow: inset -1px -1px 1px rgba(228, 228, 228, 0.67);
 	-webkit-box-shadow: inset -1px -1px 1px rgba(228, 228, 228, 0.67);
 	-moz-box-shadow: inset -1px -1px 1px rgba(228, 228, 228, 0.67);
