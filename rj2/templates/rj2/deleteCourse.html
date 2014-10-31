@@ -3,7 +3,8 @@
 <head>
 <title>ManageAccount</title>
 
-<link href="css/style.css" rel="stylesheet" type="text/css"/>
+{% load staticfiles %}
+<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
@@ -11,11 +12,11 @@
 	<!---header--->
     <div class="header">
         <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt=""/></a>
+		<a href="index.html"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
         </div>
         <div class="signin">
             <ul>
-                <li><a href="edit.html">Hello, smith@yahoo.com</a></li>
+		    <li><a href="edit.html">Hello, {{ user }}</a></li>
                 <li class="a"><h6>or</h6></li>
                 <li class="b"><a href="index.html">Signout</a></li>
                 <div class="clear"></div>
@@ -60,28 +61,22 @@
                 <tr>
                     <td>Course Name</td>
                     <td>Instructor</td>
-                    <td>Time</td>
+                    <td>Actions</td>
                 </tr>
-                <tr>
-                    <td>Theory of Computation</td>
-                    <td>James</td>
-                    <td>11:00 - 12:00</td>
-                    <td>
-                        <input type="button" value="Delete" id="delete-submit">
+		{% for course in courses %}
+		<tr>
+		    <td> {{ course }} </td>
+		    <td> {% for instructor in course.instructors.all %}
+			    {{ instructor}}; 
+			 {% endfor %}
+		    </td>
+		    <td>
+			<input type="button" value="Delete" id="delete-submit">
                         <input type="button" value="Deprecate" id="deprecate-submit">
                         <input type="button" value="Edit" id="edit-submit">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Theory of Computation</td>
-                    <td>Ken</td>
-                    <td>11:00 - 12:00</td>
-                    <td>
-                        <input type="button" value="Delete" id="delete-submit">
-                        <input type="button" value="Deprecate" id="deprecate-submit">
-                        <input type="button" value="Edit" id="edit-submit">
-                    </td>
-                </tr>
+		    </td>
+		 </tr>
+		{% endfor %}
             </table>
 			<!-- /Table -->
 		</div>

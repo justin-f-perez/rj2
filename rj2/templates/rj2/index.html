@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Home</title>
-<link href="css/style.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" type="text/css" href="css/component.css" />
+{% load staticfiles %}
+<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -12,7 +12,7 @@
 	<!---header--->
 <div class="header">
 		<div class="logo">
-			<a href="index.html"><img src="images/logo.png" alt=""/></a>
+			<a href="index.html"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
 		</div>
 		<div class="signin">
             <ul>
@@ -47,7 +47,7 @@
         <p><a href="about.html">Learn More</a></p>
    </div>
    <div class="right">
-   		<img src="images/a.jpg" alt="">
+	   <img src="{% static 'rj2/images/a.jpg' %}" alt="">
    </div>
    <div class="clear"> </div>
 </div>

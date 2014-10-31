@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>ManageAccount</title>
-
-<link href="css/style.css" rel="stylesheet" type="text/css"/>
+{% load staticfiles %}
+<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
@@ -15,7 +15,7 @@
         </div>
         <div class="signin">
             <ul>
-                <li><a href="edit.html">Hello, smith@yahoo.com</a></li>
+		<li><a href="edit.html">Hello, {{ user }}</a></li>
                 <li class="a"><h6>or</h6></li>
                 <li class="b"><a href="index.html">Signout</a></li>
                 <div class="clear"></div>
@@ -57,31 +57,8 @@
 		 <div class="registration_form">
 		 <!-- Form -->
 			<form id="registration_form" action="" method="post">
-				<div>
-					<label>
-						<input placeholder="Course Name" type="text" tabindex="3" required="">
-					</label>
-				</div>
-                <div>
-                    <label>
-                        <input placeholder="Intructor" type="text" tabindex="3" required="">
-                            </label>
-                </div>
-                <div>
-                    <label>
-                        <input placeholder="Weeks" type="text" tabindex="3" required="">
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input placeholder="Fee" type="text" tabindex="3" required="">
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <textarea placeholder="Description" abindex="3" required=""></textarea>
-                    </label>
-                </div>
+				{{ form }}	
+				{% csrf_token %}
 				<div>
                     <input type="submit" value="Submit" id="save-submit">
 				</div>
