@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import UpdateView
 from rj2.forms import CourseForm
 from rj2.models import Course
 
@@ -19,10 +20,12 @@ def manage_courses(request):
                   {"form": form, "courses": courses})
 
 
-@login_required
-def edit_course(request, pk=None):
-    return HttpResponse("Manage Courses")
+class CourseUpdate(UpdateView):
+    model = Course
+    fields = ['name', 'description', 'fee', 'is_deprecated', 'is_active',
+              'instructors']
 
+edit_course = login_required(CourseUpdate.as_view())
 
 @login_required
 def add_course(request):
