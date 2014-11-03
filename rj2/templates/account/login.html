@@ -29,7 +29,7 @@
             </ul>
         </div>
         <ul id="sddm">
-            <li><a href="?">Home</a>
+		<li><a href="{% url 'rj2_homepage' %}">Home</a>
             </li>
             <li><a href="#">Course</a>
             </li>
@@ -73,7 +73,7 @@
 					<input type="submit" value="sign in" id="register-submit">
 				</div>
 				<div class="forget">
-					<a href="#">forgot your password</a>
+					<a href="{% url 'account_reset_password' %}">forgot your password</a>
 				</div>
 			</form>
 			<!-- /Form -->

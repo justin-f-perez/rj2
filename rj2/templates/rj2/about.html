@@ -3,7 +3,7 @@
 <head>
 <title>About</title>
 
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
@@ -11,19 +11,13 @@
 	<!---header--->
     <div class="header">
         <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt=""/></a>
+		<a href="{% url 'rj2_homepage' %}"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
         </div>
         <div class="signin">
             <ul>
-                <!--
-                 {% if user_login %}
-                 <li><a href="#">Hello, {{ person_name }}</a></li>
-                 <li class="b"></li>
-                 {% else %}
-                 --->
-                <li><a href="signin.html">Signin</a></li>
+		    <li><a href="{% url 'account_login' %}">Signin</a></li>
                 <li class="a"><h6>or</h6></li>
-                <li class="b"><a href="signup.html">Signup</a></li>
+		<li class="b"><a href="{% url 'account_signup' %}">Signup</a></li>
                 <div class="clear"> </div>
                 <!---{% endif %}--->
             </ul>
@@ -39,7 +33,7 @@
         <p>Runjin Wang (Team Member) - Email: runjin-wang@uiowa.edu</p>
    </div>
    <div class="right">
-   		<img src="images/a.jpg" alt="">
+	   <img src="{% static 'rj2/images/a.jpg' %}" alt="">
    </div>
    <div class="clear"> </div>
    <p>Brief Introduction here</p>

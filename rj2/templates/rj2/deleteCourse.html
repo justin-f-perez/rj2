@@ -18,12 +18,12 @@
             <ul>
 		    <li><a href="edit.html">Hello, {{ user }}</a></li>
                 <li class="a"><h6>or</h6></li>
-                <li class="b"><a href="index.html">Signout</a></li>
+		<li class="b"><a href="{% url 'account_logout' %}">Signout</a></li>
                 <div class="clear"></div>
             </ul>
         </div>
         <ul id="sddm">
-            <li><a href="#">Home</a>
+		<li><a href="{% url 'rj2_homepage' %}">Home</a>
             </li>
             <li><a href="#">Course</a>
             </li>
