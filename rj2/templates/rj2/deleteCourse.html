@@ -71,9 +71,7 @@
 			 {% endfor %}
 		    </td>
 		    <td>
-			<input type="button" value="Delete" id="delete-submit">
-                        <input type="button" value="Deprecate" id="deprecate-submit">
-                        <input type="button" value="Edit" id="edit-submit">
+			    <a href="{% url 'edit_course' course.id %}">edit</a>
 		    </td>
 		 </tr>
 		{% endfor %}
