@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
@@ -24,6 +25,8 @@ class CourseUpdate(UpdateView):
     model = Course
     fields = ['name', 'description', 'fee', 'is_deprecated', 'is_active',
               'instructors']
+    success_url = '/manage_courses'
+
 
 edit_course = login_required(CourseUpdate.as_view())
 
