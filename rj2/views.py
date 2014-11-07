@@ -16,7 +16,7 @@ def homepage(request):
 def manage_courses(request):
     form_class = CourseForm
     form = form_class()
-    courses = Course.objects.all()
+    courses = Course.objects.filter(content_manager=request.user)
     return render(request, "rj2/deleteCourse.html", 
                   {"form": form, "courses": courses})
 
