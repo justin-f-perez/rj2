@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, CreateView
 from rj2.forms import CourseForm
@@ -52,10 +52,17 @@ def add_course(request):
 class QuizCreate(CreateView):
     model = Quiz
     fields = ['title',]
+    success_url = '/manage_courses'
 
-    def dispatch(self, pk, *args, **kwargs):
-        self.course = get_object_or_404(Course, pk=pk)
+    def dispatch(self, *args, **kwargs):
+        self.course = get_object_or_404(Course, pk=kwargs['pk'])
         return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.course = self.course
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 add_quiz = login_required(QuizCreate.as_view())
 
