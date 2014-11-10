@@ -1,29 +1,8 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<title>About</title>
-
-<link href="{% static 'rj2/css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-</head>
-<body>
-	<!---header--->
-    <div class="header">
-        <div class="logo">
-		<a href="{% url 'rj2_homepage' %}"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
-        </div>
-        <div class="signin">
-            <ul>
-		    <li><a href="{% url 'account_login' %}">Signin</a></li>
-                <li class="a"><h6>or</h6></li>
-		<li class="b"><a href="{% url 'account_signup' %}">Signup</a></li>
-                <div class="clear"> </div>
-                <!---{% endif %}--->
-            </ul>
-        </div>
-        <div class="clear"> </div>
-    </div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "rj2/base.html" %}
+{% load staticfiles %}
+{% block head_title %}About{% endblock %}
+{% block content %}
 <div class="footer-top">
 <div class="wrap">
 	<div class="left">
@@ -38,7 +17,7 @@
    <div class="clear"> </div>
    <p>Brief Introduction here</p>
    <div class="clear"> </div>
-   
+   {% endblock %}
 </div>
 </div>
 

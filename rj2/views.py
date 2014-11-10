@@ -6,6 +6,8 @@ from django.views.generic.edit import UpdateView, CreateView
 from rj2.forms import CourseForm
 from rj2.models import Course, Quiz
 
+def aboutus(request):
+    return render(request, "rj2/about.html")
 
 @login_required
 def homepage(request):
