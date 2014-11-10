@@ -595,6 +595,91 @@ h4.style{
 .registration_form div{
 	padding:10px 0;
 }
+.errorlist{
+    font-size: 0.8725em;
+    line-height:1.9em;
+    color:  red;
+}
+
+.registration_form label{
+    font-size: 0.92em;
+    line-height:2.4em;
+    color:  #686C70;
+    margin: 4% 0;
+}
+#id_name{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: block;
+    padding: 10px;
+    outline: none;
+    font-family: 'Microsoft yahei', sans-serif;
+    font-size: 0.8925em;
+    color:  #686C70;
+    -webkit-appearance: none;
+    background: none;
+    border: 1px solid #86C8D5;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -o-border-radius: 6px;
+}
+#id_fee{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: block;
+    padding: 10px;
+    outline: none;
+    font-family: 'Microsoft yahei', sans-serif;
+    font-size: 0.8925em;
+    color:  #686C70;
+    -webkit-appearance: none;
+    background: none;
+    border: 1px solid #86C8D5;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -o-border-radius: 6px;
+}
+
+#id_instructors{
+    margin-top: 5px;
+    margin-bottom: 0px;
+    display: block;
+    padding: 10px;
+    outline: none;
+    font-family: 'Microsoft yahei', sans-serif;
+    font-size: 0.8925em;
+    color:  #686C70;
+    -webkit-appearance: none;
+    background: none;
+    border: 1px solid #86C8D5;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -o-border-radius: 6px;
+}
+
+.registration_form span{
+    font-size: 0.8725em;
+    line-height:1.9em;
+    color:  #686C70;
+    display: block;
+    margin-top:-5px;
+    margin-bottom: 10px;
+}
 
 .registration_form input[type="text"],.registration_form input[type="email"],.registration_form input[type="tel"],.registration_form input[type="password"]{
 	padding: 10px;

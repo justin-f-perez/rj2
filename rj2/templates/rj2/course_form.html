@@ -2,9 +2,20 @@
 {% block head_title %}Edit Course{% endblock %}
 {% block content %}
 
-<form action="" method="post">{% csrf_token %}
-	    {{ form.as_p }}
-	        <input type="submit" value="Update" />
-	</form>
-
+<div class="edit_center">
+    <h3>Edit Course</h3>
+    <p>Edit course information below.</p>
+    <div class="registration">
+        <div class="registration_left">
+            <div class="registration_form">
+                <form action="" method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <div>
+                        <input type="submit" value="Update">
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+</div>
 {% endblock %}
