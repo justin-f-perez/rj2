@@ -74,6 +74,11 @@ class MyUser(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+    def save(self, *args, **kwargs):
+        # if user being demoted from content manager, make sure they are not
+        # managing any courses
+        super().save(*args, **kwargs)
+
 class Course(models.Model):
     def __str__(self):
         return self.name
@@ -84,6 +89,7 @@ class Course(models.Model):
     is_deprecated = models.BooleanField(blank=False, null=False, default=False)
     is_active = models.BooleanField(blank=False, null=False, default=False)
     instructors = models.ManyToManyField(MyUser)
+    content_manager = models.ForeignKey(MyUser, related_name="managed_courses")
 
     def deprecate(self):
         """
