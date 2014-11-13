@@ -47,8 +47,9 @@
         <div class="clear"> </div>
     </div>
 <!-- start top_bg. -->
+{% if user.is_authenticated %}
 <div class="top_bg">
-<div class="main_top">
+    <div class="main_top">
 	<h4 class="style">Manage your account</h4>
     <ul class="subneg">
         <li><a href="#">Manage account</a>
@@ -60,6 +61,13 @@
     </ul>
 </div>
 </div>
+{% else %}
+<div class="top_bg">
+    <div class="main_top">
+        <h4 class="style">&nbsp;</h4>
+    </div>
+</div>
+{% endif %}
 <!-- start main -->
 {% block content %}
 {% endblock %}
