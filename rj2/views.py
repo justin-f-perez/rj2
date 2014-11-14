@@ -54,7 +54,6 @@ class QuizCreate(CreateView):
     model = Quiz
     fields = ['title',]
     success_url = '/manage_courses'
-    template_name = 'rj2/addQuiz.html'
 
     def dispatch(self, *args, **kwargs):
         self.course = get_object_or_404(Course, pk=kwargs['pk'])
