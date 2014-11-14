@@ -41,6 +41,7 @@ class MyUser(AbstractBaseUser):
         unique=True,
     )
     is_active = models.BooleanField(default=True)
+    is_content_manager = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
     objects = MyUserManager()
@@ -88,7 +89,7 @@ class Course(models.Model):
     fee = models.DecimalField(decimal_places=2, max_digits=20)
     is_deprecated = models.BooleanField(blank=False, null=False, default=False)
     is_active = models.BooleanField(blank=False, null=False, default=False)
-    instructors = models.ManyToManyField(MyUser)
+    instructors = models.TextField(blank=False, null=False)
     content_manager = models.ForeignKey(MyUser, related_name="managed_courses")
 
     def deprecate(self):
@@ -136,7 +137,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     is_correct = models.BooleanField(blank=False, null=False, default=False)
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(Question, related_name="answers")
     text = models.CharField(blank=False, null=False, max_length=100)
 
     def __str__(self):
