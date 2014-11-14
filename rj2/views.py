@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, CreateView
 from rj2.forms import CourseForm
-from rj2.models import Course, Quiz
+from rj2.models import Course, Quiz, Answer, Question
 
 def aboutus(request):
     return render(request, "rj2/about.html")
@@ -32,6 +32,7 @@ class CourseUpdate(UpdateView):
 
 edit_course = login_required(CourseUpdate.as_view())
 
+
 @login_required
 def add_course(request):
     form_class = CourseForm
@@ -53,6 +54,7 @@ class QuizCreate(CreateView):
     model = Quiz
     fields = ['title',]
     success_url = '/manage_courses'
+    template_name = 'rj2/addQuiz.html'
 
     def dispatch(self, *args, **kwargs):
         self.course = get_object_or_404(Course, pk=kwargs['pk'])
@@ -72,3 +74,56 @@ class QuizUpdate(UpdateView):
     success_url = '/manage_courses'
 
 edit_quiz = login_required(QuizUpdate.as_view())
+
+class QuestionCreate(CreateView):
+    model = Question
+    fields = ['text']
+
+    def get_success_url(self):
+        return "/edit_question/" + str(self.object.pk) + "/add_answer/"
+        #return reverse('add_answer', kwargs={'pk': self.object.pk})
+
+    def dispatch(self, *args, **kwargs):
+        self.quiz = get_object_or_404(Quiz, pk=kwargs['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.quiz = self.quiz
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+add_question = login_required(QuestionCreate.as_view())
+
+
+class QuestionUpdate(UpdateView):
+        model = Question
+        fields = ['text', 'answers']
+
+        def get_success_url(self):
+            return "/edit_question/" + str(self.object.pk) + "/"
+
+
+edit_question = login_required(QuestionUpdate.as_view())
+
+
+class AnswerCreate(CreateView):
+    model = Answer
+    fields = ['text']
+
+    def dispatch(self, *args, **kwargs):
+        self.question= get_object_or_404(Question, pk=kwargs['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.question = self.question
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return "/edit_question/" + str(self.question.pk) + "/add_answer/"
+
+add_answer = login_required(AnswerCreate.as_view())
+edit_answer = login_required(UpdateView.as_view(model=Answer))
