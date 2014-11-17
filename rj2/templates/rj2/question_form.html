@@ -1,9 +1,9 @@
 {% extends "rj2/base.html" %}
-{% block head_title %}Edit Quiz{% endblock %}
+{% block head_title %}Add/Edit Question{% endblock %}
 {% block content %}
 
 <div class="edit_center">
-    <h3>Edit Quiz</h3>
+    <h3>Add/Edit Question Form</h3>
     <div class="registration">
         <div class="registration_left">
             <div class="registration_form">
@@ -14,10 +14,10 @@
                     </div>
                 </form>
                 </div>
-		<a href="{% url 'quiz_list' object.course.pk  %}">Go back to Quiz List for {{ object.course }}</a>
+		<a href="{% url 'question_list' quiz.pk %}"> Go back to Question List </a>
 		{% if object %}
 		<br />
-		<a href="{% url 'question_list' object.pk %}">Question List</a>
+		<a href="{% url 'answer_list' object.pk %}"> View Answer List</a>
 		{% endif %}
             </div>
         </div>

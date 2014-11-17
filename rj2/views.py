@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic import ListView, TemplateView
 from rj2.forms import CourseForm
 from rj2.models import Course, Quiz, Answer, Question
 
@@ -28,9 +29,6 @@ class CourseUpdate(UpdateView):
     fields = ['name', 'description', 'fee', 'is_deprecated', 'is_active',
               'instructors']
     success_url = '/manage_courses'
-
-
-edit_course = login_required(CourseUpdate.as_view())
 
 
 @login_required
@@ -65,14 +63,28 @@ class QuizCreate(CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
-add_quiz = login_required(QuizCreate.as_view())
 
 class QuizUpdate(UpdateView):
     model = Quiz
     fields = ['title']
     success_url = '/manage_courses'
 
-edit_quiz = login_required(QuizUpdate.as_view())
+
+class QuizList(ListView):
+    template = 'rj2/quiz_list.html'
+
+    def get_queryset(self, *args, **kwargs):
+        return Quiz.objects.filter(course=self.course)
+
+    def dispatch(self, *args, **kwargs):
+        self.course = get_object_or_404(Course, pk=kwargs['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['course'] = self.course
+        return context
+
 
 class QuestionCreate(CreateView):
     model = Question
@@ -92,19 +104,43 @@ class QuestionCreate(CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
-
-add_question = login_required(QuestionCreate.as_view())
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['quiz'] = self.quiz
+        return context
 
 
 class QuestionUpdate(UpdateView):
         model = Question
-        fields = ['text', 'answers']
+        fields = ['text']
 
         def get_success_url(self):
             return "/edit_question/" + str(self.object.pk) + "/"
 
+        def dispatch(self, *args, **kwargs):
+            self.question = get_object_or_404(Question, pk=kwargs['pk'])
+            return super().dispatch(*args, **kwargs)
 
-edit_question = login_required(QuestionUpdate.as_view())
+        def get_context_data(self, *args, **kwargs):
+            context = super().get_context_data(*args, **kwargs)
+            context['quiz'] = self.question.quiz
+            return context
+
+
+class QuestionList(ListView):
+    template = 'rj2/question_list.html'
+
+    def get_queryset(self, *args, **kwargs):
+        return Question.objects.filter(quiz=self.quiz)
+
+    def dispatch(self, *args, **kwargs):
+        self.quiz = get_object_or_404(Question, pk=kwargs['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['quiz'] = self.quiz
+        return context
 
 
 class AnswerCreate(CreateView):
@@ -124,5 +160,74 @@ class AnswerCreate(CreateView):
     def get_success_url(self):
         return "/edit_question/" + str(self.question.pk) + "/add_answer/"
 
+
+class AnswerUpdate(UpdateView):
+    model = Answer
+    fields = ['text']
+
+    def dispatch(self, *args, **kwargs):
+        self.answer = get_object_or_404(Answer, pk=kwargs['pk'])
+        self.question = self.answer.question 
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['question'] = self.question
+        return context
+
+    def get_successs_url(self):
+        return "/edit_question/" + str(self.question.pk) + "/"
+
+    
+
+
+class AnswerList(ListView):
+    template = 'rj2/answer_list.html'
+
+    def get_queryset(self, *args, **kwargs):
+        return Answer.objects.filter(question=self.question)
+
+    def dispatch(self, *args, **kwargs):
+        self.question = get_object_or_404(Question, pk=kwargs['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['question'] = self.question
+        return context
+
+
+class TakeQuiz(TemplateView):
+    template_name = 'rj2/take_quiz.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.quiz = get_object_or_404(Quiz, pk=kwargs['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['quiz'] = self.quiz
+        questions = Question.objects.filter(quiz=self.quiz)
+        qdict = dict()
+        for i in range(len(questions)):
+            qdict['question'+str(i)] = questions[i].answers
+        context['questions'] = qdict
+        return context
+        
+
+    def post(self, request, *args, **kwargs):
+        pass # BUG: need to process form data
+
+
+
 add_answer = login_required(AnswerCreate.as_view())
-edit_answer = login_required(UpdateView.as_view(model=Answer))
+edit_answer = login_required(AnswerUpdate.as_view())
+answer_list = login_required(AnswerList.as_view())
+edit_question = login_required(QuestionUpdate.as_view())
+add_question = login_required(QuestionCreate.as_view())
+question_list = login_required(QuestionList.as_view())
+add_quiz = login_required(QuizCreate.as_view())
+edit_quiz = login_required(QuizUpdate.as_view())
+quiz_list = login_required(QuizList.as_view())
+edit_course = login_required(CourseUpdate.as_view())
+take_quiz = login_required(TakeQuiz.as_view())
