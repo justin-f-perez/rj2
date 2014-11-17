@@ -504,6 +504,11 @@ h4.style{
     text-shadow: 0 1px 0 white;
     border-bottom: 1px solid #E9E9E9;
 }
+.edit_center div{
+    float:left;
+    margin-left:50px;
+}
+
 .edit_center p{
     font-size: 0.8725em;
     line-height:1.9em;
