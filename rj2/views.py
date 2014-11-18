@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, CreateView
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, View
 from rj2.forms import CourseForm
 from rj2.models import Course, Quiz, Answer, Question
 
@@ -64,7 +64,7 @@ class QuizMixin(View):
         return context
 
 
-class QuizCreate(CreateView, QuizMixin):
+class QuizCreate(QuizMixin, CreateView):
     success_url = '/manage_courses'
 
     def form_valid(self, form):
@@ -74,11 +74,11 @@ class QuizCreate(CreateView, QuizMixin):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class QuizUpdate(UpdateView, QuizMixin):
+class QuizUpdate(QuizMixin, UpdateView):
     success_url = '/manage_courses'
 
 
-class QuizList(ListView, QuizMixin):
+class QuizList(QuizMixin, ListView):
     template = 'rj2/quiz_list.html'
 
     def get_queryset(self, *args, **kwargs):
@@ -99,7 +99,7 @@ class QuestionMixin(View):
         return context
 
 
-class QuestionCreate(CreateView, QuestionMixin):
+class QuestionCreate(QuestionMixin, CreateView):
     def get_success_url(self):
         return "/edit_question/" + str(self.object.pk) + "/add_answer/"
         #return reverse('add_answer', kwargs={'pk': self.object.pk})
@@ -111,12 +111,12 @@ class QuestionCreate(CreateView, QuestionMixin):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class QuestionUpdate(UpdateView, QuestionMixin):
+class QuestionUpdate(QuestionMixin, UpdateView):
         def get_success_url(self):
             return "/edit_question/" + str(self.object.pk) + "/"
 
 
-class QuestionList(ListView, QuestionMixin):
+class QuestionList(QuestionMixin, ListView):
     template = 'rj2/question_list.html'
 
     def get_queryset(self, *args, **kwargs):
@@ -137,7 +137,7 @@ class AnswerMixin(View):
         return context
 
 
-class AnswerCreate(CreateView, AnswerMixin):
+class AnswerCreate(AnswerMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.question = self.question
@@ -148,12 +148,12 @@ class AnswerCreate(CreateView, AnswerMixin):
         return "/edit_question/" + str(self.question.pk) + "/add_answer/"
 
 
-class AnswerUpdate(UpdateView, AnswerMixin):
+class AnswerUpdate(AnswerMixin, UpdateView):
     def get_successs_url(self):
         return "/edit_question/" + str(self.question.pk) + "/"
 
 
-class AnswerList(ListView, AnswerMixin):
+class AnswerList(AnswerMixin, ListView):
     template = 'rj2/answer_list.html'
 
     def get_queryset(self, *args, **kwargs):
