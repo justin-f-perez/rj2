@@ -48,14 +48,24 @@ def add_course(request):
         form = form_class()
         return render(request, template_name, {'form': form})
 
-class QuizCreate(CreateView):
-    model = Quiz
-    fields = ['title',]
-    success_url = '/manage_courses'
 
+class QuizMixin(View):
+    model = Quiz
+    fields = ['title']
+    
     def dispatch(self, *args, **kwargs):
         self.course = get_object_or_404(Course, pk=kwargs['pk'])
         return super().dispatch(*args, **kwargs)
+
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['course'] = self.course
+        return context
+
+
+class QuizCreate(CreateView, QuizMixin):
+    success_url = '/manage_courses'
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -64,39 +74,35 @@ class QuizCreate(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class QuizUpdate(UpdateView):
-    model = Quiz
-    fields = ['title']
+class QuizUpdate(UpdateView, QuizMixin):
     success_url = '/manage_courses'
 
 
-class QuizList(ListView):
+class QuizList(ListView, QuizMixin):
     template = 'rj2/quiz_list.html'
 
     def get_queryset(self, *args, **kwargs):
         return Quiz.objects.filter(course=self.course)
 
-    def dispatch(self, *args, **kwargs):
-        self.course = get_object_or_404(Course, pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['course'] = self.course
-        return context
-
-
-class QuestionCreate(CreateView):
+class QuestionMixin(View):
     model = Question
     fields = ['text']
-
-    def get_success_url(self):
-        return "/edit_question/" + str(self.object.pk) + "/add_answer/"
-        #return reverse('add_answer', kwargs={'pk': self.object.pk})
 
     def dispatch(self, *args, **kwargs):
         self.quiz = get_object_or_404(Quiz, pk=kwargs['pk'])
         return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['quiz'] = self.quiz
+        return context
+
+
+class QuestionCreate(CreateView, QuestionMixin):
+    def get_success_url(self):
+        return "/edit_question/" + str(self.object.pk) + "/add_answer/"
+        #return reverse('add_answer', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -104,53 +110,34 @@ class QuestionCreate(CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['quiz'] = self.quiz
-        return context
 
-
-class QuestionUpdate(UpdateView):
-        model = Question
-        fields = ['text']
-
+class QuestionUpdate(UpdateView, QuestionMixin):
         def get_success_url(self):
             return "/edit_question/" + str(self.object.pk) + "/"
 
-        def dispatch(self, *args, **kwargs):
-            self.question = get_object_or_404(Question, pk=kwargs['pk'])
-            return super().dispatch(*args, **kwargs)
 
-        def get_context_data(self, *args, **kwargs):
-            context = super().get_context_data(*args, **kwargs)
-            context['quiz'] = self.question.quiz
-            return context
-
-
-class QuestionList(ListView):
+class QuestionList(ListView, QuestionMixin):
     template = 'rj2/question_list.html'
 
     def get_queryset(self, *args, **kwargs):
         return Question.objects.filter(quiz=self.quiz)
 
-    def dispatch(self, *args, **kwargs):
-        self.quiz = get_object_or_404(Question, pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['quiz'] = self.quiz
-        return context
-
-
-class AnswerCreate(CreateView):
+class AnswerMixin(View):
     model = Answer
-    fields = ['text']
+    fields = ['text', 'is_correct']
 
     def dispatch(self, *args, **kwargs):
         self.question= get_object_or_404(Question, pk=kwargs['pk'])
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['question'] = self.question
+        return context
+
+
+class AnswerCreate(CreateView, AnswerMixin):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.question = self.question
@@ -161,40 +148,16 @@ class AnswerCreate(CreateView):
         return "/edit_question/" + str(self.question.pk) + "/add_answer/"
 
 
-class AnswerUpdate(UpdateView):
-    model = Answer
-    fields = ['text']
-
-    def dispatch(self, *args, **kwargs):
-        self.answer = get_object_or_404(Answer, pk=kwargs['pk'])
-        self.question = self.answer.question 
-        return super().dispatch(*args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['question'] = self.question
-        return context
-
+class AnswerUpdate(UpdateView, AnswerMixin):
     def get_successs_url(self):
         return "/edit_question/" + str(self.question.pk) + "/"
 
-    
 
-
-class AnswerList(ListView):
+class AnswerList(ListView, AnswerMixin):
     template = 'rj2/answer_list.html'
 
     def get_queryset(self, *args, **kwargs):
         return Answer.objects.filter(question=self.question)
-
-    def dispatch(self, *args, **kwargs):
-        self.question = get_object_or_404(Question, pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['question'] = self.question
-        return context
 
 
 class TakeQuiz(TemplateView):
@@ -213,7 +176,6 @@ class TakeQuiz(TemplateView):
             qdict['question'+str(i)] = questions[i].answers
         context['questions'] = qdict
         return context
-        
 
     def post(self, request, *args, **kwargs):
         pass # BUG: need to process form data
