@@ -83,7 +83,6 @@
 				{% csrf_token %}
 				{{ form.as_p }}
                 {% if messages %}
-                <p style="color:red">asdasdas
 		    	<div>
 				<strong>Messages:</strong>
 				<ul>
@@ -92,7 +91,6 @@
 					{% endfor %}
 				</ul>
 			</div>
-                </p>
 		{% endif %}
 		{% if redirect_field_value %}
 		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />

@@ -27,6 +27,90 @@ body {
   background: #ffffff;
 }
 
+.buttonHolder{
+    margin-top:20px;
+}
+.ctrlHolder{
+    border: 1px solid #D7DFE5;
+    padding: 10px;
+}
+.ctrlHolder label{
+    font-size: 0.9755em;
+    padding: 16px;
+    outline: none;
+    font-family: 'Microsoft yahei', sans-serif;
+}
+
+.ctrlHolder span{
+    margin-left:35px;
+}
+.addemailbutton{
+    font-family: 'Microsoft yahei', sans-serif;
+    cursor:pointer;
+    background: #1371B3;
+    border: 1px solid #1371B3;
+    padding: 5px 5px;
+    margin-left: 20px;
+    outline:none;
+    color: #ffffff;
+    font-size: 0.8755em;
+    text-transform: capitalize;
+    -webkit-appearance: none;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border-radius: 2em;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    -o-border-radius: 2em;
+
+}
+.addemailbutton:hover{
+    background: #8dc059;
+    background: -moz-linear-gradient(top, #8dc059 0%, #77b03f 45%, #6ba537 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8dc059), color-stop(45%,#77b03f), color-stop(100%,#6ba537));
+    background: -webkit-linear-gradient(top, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    background: -o-linear-gradient(top, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    background: -ms-linear-gradient(top, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    background: linear-gradient(to bottom, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8dc059', endColorstr='#6ba537',GradientType=0 );
+    border: 1px solid  #8dc059;
+}
+.buttonHolder button{
+    font-family: 'Microsoft yahei', sans-serif;
+    cursor:pointer;
+    background: #1371B3;
+    border: 1px solid #1371B3;
+    padding: 5px 5px;
+    margin-left: 20px;
+    outline:none;
+    color: #ffffff;
+    font-size: 0.8755em;
+    text-transform: capitalize;
+    -webkit-appearance: none;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border-radius: 2em;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    -o-border-radius: 2em;
+}
+
+.buttonHolder button:hover{
+    background: #8dc059;
+    background: -moz-linear-gradient(top, #8dc059 0%, #77b03f 45%, #6ba537 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8dc059), color-stop(45%,#77b03f), color-stop(100%,#6ba537));
+    background: -webkit-linear-gradient(top, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    background: -o-linear-gradient(top, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    background: -ms-linear-gradient(top, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    background: linear-gradient(to bottom, #8dc059 0%,#77b03f 45%,#6ba537 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8dc059', endColorstr='#6ba537',GradientType=0 );
+    border: 1px solid  #8dc059;
+}
+
 .showresult {
     border: 1px solid #D7DFE5;
     width: 100%;
@@ -758,6 +842,21 @@ h4.style{
 }
 .terms:hover{
 	text-decoration:none;
+}
+.links{
+    margin-right: 20px;
+    text-transform: capitalize;
+    color: #686C70;
+    text-decoration: underline;
+    font-size: 0.8725em;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.links:hover{
+    text-decoration: none;
+    color:#1065A1;
 }
 .forget a{
 	text-transform: capitalize;
