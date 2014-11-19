@@ -47,6 +47,7 @@
 		 <div class="registration_form">
 		 <!-- Form -->
 			<form id="registration_form" action="" method="post">
+			{% csrf_token %}
 				{{ form }}
                 <div>
                     <label>
