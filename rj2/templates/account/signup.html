@@ -47,7 +47,7 @@
 <div class="main_bg">
 <div class="wrap">
 <div class="main">
-	<div class="login_left">
+	<div class="edit_center">
 		<h3>register new customers</h3>
 		<p>Please finish the information below for registration.</p>
 		<div class="registration_left">
@@ -83,7 +83,6 @@
 				{% csrf_token %}
 				{{ form.as_p }}
                 {% if messages %}
-                <p style="color:red">asdasdas
 		    	<div>
 				<strong>Messages:</strong>
 				<ul>
@@ -92,7 +91,6 @@
 					{% endfor %}
 				</ul>
 			</div>
-                </p>
 		{% endif %}
 		{% if redirect_field_value %}
 		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />

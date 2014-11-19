@@ -53,7 +53,7 @@
     <div class="main_top">
 	<h4 class="style">Manage your account</h4>
     <ul class="subneg">
-        <li><a href="#">Manage account</a>
+        <li><a href="{% url 'account_email' %}">Manage account</a>
         </li>
 	<li>{% if user.is_admin %}<a href="{% url 'add_course' %}">{% elif user.is_content_manager %}<a href="{% url 'add_course' %}">{% else %} <a href="404">{% endif %}Add course</a>
         </li>

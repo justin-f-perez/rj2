@@ -15,6 +15,9 @@
                     </div>
                 </form>
                 </div>
+		{% if object %}
+		<a href="{% url 'quiz_list' object.pk %}"> View Quiz List </a>
+		{% endif %}
             </div>
         </div>
 </div>
