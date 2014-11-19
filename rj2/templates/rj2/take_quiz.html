@@ -1,0 +1,27 @@
+{% extends "rj2/base.html" %}
+{% block head_title %}Take Quiz{% endblock %}
+{% block content %}
+
+<div class="edit_center">
+    <h3>Take Quiz</h3>
+    <div class="registration">
+        <div class="registration_left">
+            <div class="registration_form">
+		<p> 
+		{% for question in questions %}
+		{{ question.text }}
+
+		{% endfor %}
+	</p>
+
+	<br />
+	<br />
+	Go back to edit question:
+
+	<a href="{% url 'edit_question' question.pk %}"> {{ question.text }} </a>	
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

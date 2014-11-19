@@ -1,0 +1,28 @@
+{% extends "rj2/base.html" %}
+{% block head_title %}Quiz List{% endblock %}
+{% block content %}
+
+<div class="edit_center">
+	<h3>Quiz List for {{ course }} </h3>
+    <div class="registration">
+        <div class="registration_left">
+            <div class="registration_form">
+		    <ul> 
+		    {% for quiz in object_list %}
+		
+		    <li>		<a href="{% url 'edit_quiz' quiz.pk %}">
+			    {{ quiz.title }}
+		</a></li>
+
+		{% endfor %}
+	</ul>
+
+
+            </div>
+
+	    <br />
+	    <a href="{% url 'add_quiz' course.pk %}"> Add a new Quiz </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
