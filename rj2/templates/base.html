@@ -55,9 +55,9 @@
     <ul class="subneg">
         <li><a href="#">Manage account</a>
         </li>
-	<li><a href="{% url 'add_course' %}">Add course</a>
+	<li>{% if user.is_admin %}<a href="{% url 'add_course' %}">{% elif user.is_content_manager %}<a href="{% url 'add_course' %}">{% else %} <a href="404">{% endif %}Add course</a>
         </li>
-        <li><a href="{% url 'manage_courses' %}">Manage Course</a>
+        <li>{% if user.is_admin %}<a href="{% url 'manage_courses' %}">{% elif user.is_content_manager %}<a href="{% url 'manage_courses' %}">{% else %} <a href="404">{% endif %}Manage Course</a>
         </li>
     </ul>
 </div>
