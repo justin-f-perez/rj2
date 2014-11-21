@@ -29,6 +29,8 @@ class CourseUpdate(UpdateView):
     fields = ['name', 'description', 'fee', 'is_deprecated', 'is_active',
               'instructors']
     success_url = '/manage_courses'
+    template_name = 'rj2/editCourse.html'
+	
 
 
 @login_required
