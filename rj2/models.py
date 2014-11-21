@@ -89,7 +89,8 @@ class Course(models.Model):
     fee = models.DecimalField(decimal_places=2, max_digits=20)
     is_deprecated = models.BooleanField(blank=False, null=False, default=False)
     is_active = models.BooleanField(blank=False, null=False, default=False)
-    instructors = models.TextField(blank=False, null=False)
+    instructors = models.CharField(unique=True, blank=False, null=False,
+                                   max_length=100)
     content_manager = models.ForeignKey(MyUser, related_name="managed_courses")
 
     def deprecate(self):
