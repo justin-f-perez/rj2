@@ -192,11 +192,13 @@ body {
 }
 .signin{
 	float:right;
-	width: 26%;
+	width: 38%;
 	position: relative;
 	margin-top: 0.5%;
+   
 }
 .signin ul li{
+    float:right;
 }
 .signin li a {
 	padding: 6px 30px;

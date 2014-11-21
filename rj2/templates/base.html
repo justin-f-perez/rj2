@@ -21,18 +21,18 @@
 		{% if user.is_authenticated %}
         <div class="signin">
             <ul>
-		    <li><a href="edit.html">Hello, {{ user }}</a></li>
+		    <li class="b"><a href="{% url 'account_logout' %}">Signout</a></li>
                 <li class="a"><h6>or</h6></li>
-		<li class="b"><a href="{% url 'account_logout' %}">Signout</a></li>
+		        <li><a href="edit.html">Hello, {{ user }}</a></li>
                 <div class="clear"></div>
             </ul>
         </div>
 		{% else %}
 		<div class="signin">
         <ul>
-	    <li><a href="{% url 'account_login' %}">Signin</a></li>
+	            <li class="b"><a href="{% url 'account_signup' %}">Signup</a></li>
 				<li class="a"><h6>or</h6></li>
-				<li class="b"><a href="{% url 'account_signup' %}">Signup</a></li>
+				<li><a href="{% url 'account_login' %}">Signin</a></li>
 				<div class="clear"> </div>
 			</ul>
 		</div>
