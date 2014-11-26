@@ -152,3 +152,8 @@ class LinkedContent(models.Model):
 
     def __str__(self):
         return self.URL
+
+class Score(models.Model):
+    user = models.ForeignKey(MyUser)
+    quiz = models.ForeignKey(Quiz)
+    unique_together = (user, quiz)
