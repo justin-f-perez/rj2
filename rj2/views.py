@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic import ListView, TemplateView, View
+from django.core.exceptions import PermissionDenied
 from rj2.forms import CourseForm
 from rj2.models import Course, Quiz, Answer, Question
 
@@ -17,6 +18,8 @@ def homepage(request):
 
 @login_required
 def manage_courses(request):
+    if not request.user.is_content_manager:
+        raise PermissionDenied
     form_class = CourseForm
     form = form_class()
     courses = Course.objects.filter(content_manager=request.user)
@@ -30,13 +33,26 @@ class CourseUpdate(UpdateView):
               'instructors']
     success_url = '/manage_courses'
     template_name = 'rj2/editCourse.html'
-	
+
+    def dispatch(self, request, *args, **kwargs):	
+        course = Course.objects.get(pk=kwargs['pk'])
+        if request.user == course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
 
 
 @login_required
 def add_course(request):
     form_class = CourseForm
     template_name = 'rj2/addCourse.html'
+
+    permitted = request.user.is_content_manager or \
+                request.user.is_admin
+
+    if not permitted:
+        raise PermissionDenied
 
     if request.method == 'POST':
         form = form_class(request.POST)
@@ -75,9 +91,24 @@ class QuizCreate(QuizMixin, CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def dispatch(self, request, *args, **kwargs):	
+        course = Course.objects.get(pk=kwargs['pk'])
+        if request.user == course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
 
 class QuizUpdate(QuizMixin, UpdateView):
     success_url = '/manage_courses'
+
+    def dispatch(self, request, *args, **kwargs):	
+        quiz = Quiz.objects.get(pk=kwargs['pk'])
+        course = Course.objects.get(pk=quiz.course)
+        if request.user == course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
 
 class QuizList(QuizMixin, ListView):
@@ -112,10 +143,27 @@ class QuestionCreate(QuestionMixin, CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def dispatch(self, request, *args, **kwargs):	
+        quiz = Quiz.objects.get(pk=kwargs['pk'])
+        course = Course.objects.get(pk=quiz.course)
+        if request.user == course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
 
 class QuestionUpdate(QuestionMixin, UpdateView):
-        def get_success_url(self):
-            return "/edit_question/" + str(self.object.pk) + "/"
+    def get_success_url(self):
+        return "/edit_question/" + str(self.object.pk) + "/"
+
+    def dispatch(self, request, *args, **kwargs):	
+        question = Question.objects.get(pk=kwargs['pk'])
+        quiz = Quiz.objects.get(pk=question.quiz)
+        course = Course.objects.get(pk=quiz.course)
+        if request.user == course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
 
 class QuestionList(QuestionMixin, ListView):
@@ -149,10 +197,29 @@ class AnswerCreate(AnswerMixin, CreateView):
     def get_success_url(self):
         return "/edit_question/" + str(self.question.pk) + "/add_answer/"
 
+    def dispatch(self, request, *args, **kwargs):	
+        question = Question.objects.get(pk=kwargs['pk'])
+        quiz = Quiz.objects.get(pk=question.quiz)
+        course = Course.objects.get(pk=quiz.course)
+        if request.user == course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
 
 class AnswerUpdate(AnswerMixin, UpdateView):
     def get_successs_url(self):
         return "/edit_question/" + str(self.question.pk) + "/"
+
+    def dispatch(self, request, *args, **kwargs):	
+        answer = Answer.objects.get(pk=kwargs['pk'])
+        question = Question.objects.get(pk=answer.question)
+        quiz = Quiz.objects.get(pk=question.quiz)
+        course = Course.objects.get(pk=quiz.course)
+        if request.user == course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
 
 class AnswerList(AnswerMixin, ListView):
