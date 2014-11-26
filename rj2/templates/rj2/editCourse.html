@@ -48,7 +48,7 @@
 		 <!-- Form -->
 			<form id="registration_form" action="" method="post">
 			{% csrf_token %}
-				{{ form }}
+				{{ form.as_p }}
                 <div>
                     <label>
                         <a href="javascript:addDoc()">Add Documents</a>
@@ -68,14 +68,8 @@
                         <a href="addQuiz.html">Add Quiz</a>
                     </label>
                 </div>
-                <div>
-                    <label>
-                        Description:
-                        <textarea abindex="3" required="">text for this course</textarea>
-                    </label>
-                </div>
                 <div class="forget">
-                    <a href="deleteCourse.html">back</a>
+                    <a href="{% url 'manage_courses' %}">back</a>
                 </div>
 				<div>
 					<input type="submit" value="Save" id="save-submit">
