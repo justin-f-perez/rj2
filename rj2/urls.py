@@ -31,4 +31,5 @@ urlpatterns = patterns('',
         views.edit_answer, name='edit_answer'),
     url(r'^take_quiz/(?P<pk>[0-9]+)/$',
         views.take_quiz, name="take_quiz"),
+    url(r'^create_cert', views.create_cert, name="create_cert"),
 )

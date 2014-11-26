@@ -6,6 +6,7 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic import ListView, TemplateView, View
 from rj2.forms import CourseForm
 from rj2.models import Course, Quiz, Answer, Question
+from reportlab.pdfgen import canvas
 
 def aboutus(request):
     return render(request, "rj2/about.html")
@@ -22,6 +23,23 @@ def manage_courses(request):
     courses = Course.objects.filter(content_manager=request.user)
     return render(request, "rj2/deleteCourse.html", 
                   {"form": form, "courses": courses})
+				  
+
+def create_cert(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Certificate'] = 'attachment; filename="certificate.pdf"'
+    p = canvas.Canvas(response)
+    p.setFont("Times-BoldItalic", 25)
+    p.drawString(100, 700, "Congratulations!")
+    p.setFont("Helvetica", 20)
+    p.drawString(100, 650, request.user.email)
+    p.drawString(100, 600, "You passed: ")
+    p.drawString(220, 600, "Course Tile")
+    p.drawString(100, 550, "Your Score was: ")
+    p.drawString(250, 550, "100")
+    p.showPage()
+    p.save()
+    return response
 
 
 class CourseUpdate(UpdateView):
