@@ -9,6 +9,7 @@ from rj2.forms import CourseForm
 from rj2.models import (Course, Quiz, Answer, Question, CourseRegistration,
                        LinkedContent, Score)
 from reportlab.pdfgen import canvas
+from django import forms
 
 def aboutus(request):
     return render(request, "rj2/about.html")
@@ -28,7 +29,6 @@ def manage_courses(request):
     return render(request, "rj2/deleteCourse.html", 
                   {"form": form, "courses": courses})
 				  
-
 class CourseUpdate(UpdateView):
     model = Course
     fields = ['name', 'description', 'fee', 'is_deprecated', 'is_active',
@@ -43,7 +43,10 @@ class CourseUpdate(UpdateView):
         else:
             raise PermissionDenied
 
-
+def handle_uploaded_file(f):
+    with open('some/file/name.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
 
 @login_required
 def add_course(request):
@@ -298,7 +301,7 @@ class CourseDetail(TemplateView):
     def dispatch(self, *args, **kwargs):
         self.course = Course.objects.get(pk=kwargs['pk'])
         return super().dispatch(*args, **kwargs)
-
+		
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['course'] = self.course
