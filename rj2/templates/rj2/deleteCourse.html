@@ -24,7 +24,8 @@
 		{% for course in courses %}
 		<tr>
 		    <td> {{ course }} </td>
-			    {{ instructor }} 
+		    <td>
+			    {{ course.instructors }} 
 		    </td>
 		    <td>
 			    <a href="{% url 'edit_course' course.id %}">edit</a>
