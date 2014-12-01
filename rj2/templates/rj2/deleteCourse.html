@@ -24,9 +24,7 @@
 		{% for course in courses %}
 		<tr>
 		    <td> {{ course }} </td>
-		    <td> {% for instructor in course.instructors.all %}
-			    {{ instructor}}; 
-			 {% endfor %}
+			    {{ instructor }} 
 		    </td>
 		    <td>
 			    <a href="{% url 'edit_course' course.id %}">edit</a>
