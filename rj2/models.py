@@ -170,6 +170,7 @@ class LinkedContent(models.Model):
         return self.URL
 
 class content(models.Model):
+    course = models.ForeignKey(LinkedContent)
     files = models.FileField(upload_to='documents/%Y/%m/%d')
 
 class Score(models.Model):

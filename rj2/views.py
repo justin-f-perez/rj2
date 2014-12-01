@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 from rj2.forms import CourseForm
 from rj2.models import Course, Quiz, Answer, Question
 from reportlab.pdfgen import canvas
+from django import forms
 
 def aboutus(request):
     return render(request, "rj2/about.html")
@@ -27,24 +28,7 @@ def manage_courses(request):
     return render(request, "rj2/deleteCourse.html", 
                   {"form": form, "courses": courses})
 				  
-
-def create_cert(request):
-    response = HttpResponse(content_type='application/pdf')
-    response['Certificate'] = 'attachment; filename="certificate.pdf"'
-    p = canvas.Canvas(response)
-    p.setFont("Times-BoldItalic", 25)
-    p.drawString(100, 700, "Congratulations!")
-    p.setFont("Helvetica", 20)
-    p.drawString(100, 650, request.user.email)
-    p.drawString(100, 600, "You passed: ")
-    p.drawString(220, 600, "Course Tile")
-    p.drawString(100, 550, "Your Score was: ")
-    p.drawString(250, 550, "100")
-    p.showPage()
-    p.save()
-    return response
-
-
+	  
 class CourseUpdate(UpdateView):
     model = Course
     fields = ['name', 'description', 'fee', 'is_deprecated', 'is_active',
@@ -59,7 +43,10 @@ class CourseUpdate(UpdateView):
         else:
             raise PermissionDenied
 
-
+def handle_uploaded_file(f):
+    with open('some/file/name.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
 
 @login_required
 def add_course(request):
@@ -266,6 +253,22 @@ class TakeQuiz(TemplateView):
 
     def post(self, request, *args, **kwargs):
         pass # BUG: need to process form data
+		
+def create_cert(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Certificate'] = 'attachment; filename="certificate.pdf"'
+    p = canvas.Canvas(response)
+    p.setFont("Times-BoldItalic", 25)
+    p.drawString(100, 700, "Congratulations!")
+    p.setFont("Helvetica", 20)
+    p.drawString(100, 650, request.user.email)
+    p.drawString(100, 600, "You passed: ")
+    p.drawString(220, 600, "Course Tile")
+    p.drawString(100, 550, "Your Score was: ")
+    p.drawString(250, 550, "100")
+    p.showPage()
+    p.save()
+    return response
 
 
 
