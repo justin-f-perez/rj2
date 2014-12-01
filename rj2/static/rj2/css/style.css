@@ -115,10 +115,12 @@ body {
     border: 1px solid #D7DFE5;
     width: 100%;
     text-align: center;
+    padding: 15px;
 }
 
 .showresult td{
     height:40px;
+    padding:15px;
     font-size: 0.8725em;
     line-height:1.9em;
     color:  #686C70;
