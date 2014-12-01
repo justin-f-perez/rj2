@@ -93,6 +93,18 @@ class Course(models.Model):
                                    max_length=100)
     content_manager = models.ForeignKey(MyUser, related_name="managed_courses")
 
+    def is_completed(self, user):
+        """
+        Returns True if the user has completed all quizzes for this course.
+        Otherwise returns False.
+        """
+        quizzes = Quiz.objects.get(course=self)
+        for quiz in quizzes:
+            score = Score.objects.filter(user=user, quiz=quiz)
+            if not score.exists():
+                return False
+        return True
+
     def deprecate(self):
         """
         Deprecating a course causes the course to display a warning whenever a
@@ -119,8 +131,12 @@ class Course(models.Model):
         Releasing a course causes it to be visible (i.e., active) and
         non-deprecated.
         """
-        self.is_deprecated = False
-        self.is_active = True
+        quizzes = Quiz.objects.filter(course=self)
+        if quizzes.exists():
+            self.is_deprecated = False
+            self.is_active = True
+        else:
+            raise Exception("Cannot release a course with no quizzes.")
 
 class Quiz(models.Model):
     course = models.ForeignKey(Course)
@@ -156,4 +172,5 @@ class LinkedContent(models.Model):
 class Score(models.Model):
     user = models.ForeignKey(MyUser)
     quiz = models.ForeignKey(Quiz)
+    completed = models.DateTimeField(auto_now_add=True)
     unique_together = (user, quiz)
