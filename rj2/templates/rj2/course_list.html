@@ -1,0 +1,26 @@
+{% extends "rj2/base.html" %}
+{% block head_title %}Course List{% endblock %}
+{% block content %}
+
+<div class="edit_center">
+	<h3>Course List</h3>
+    <div class="registration">
+        <div class="registration_left">
+            <div class="registration_form">
+		    <ul> 
+		    {% for course in object_list %}
+		
+		    <li>		<a href="{% url 'register_course' course.pk %}">
+			    Register for: {{ course.name }}
+		</a></li>
+
+		{% endfor %}
+	</ul>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
