@@ -6,7 +6,8 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic import ListView, TemplateView, View
 from django.core.exceptions import PermissionDenied
 from rj2.forms import CourseForm
-from rj2.models import Course, Quiz, Answer, Question
+from rj2.models import (Course, Quiz, Answer, Question, CourseRegistration,
+                       LinkedContent, Score)
 from reportlab.pdfgen import canvas
 
 def aboutus(request):
@@ -27,23 +28,6 @@ def manage_courses(request):
     return render(request, "rj2/deleteCourse.html", 
                   {"form": form, "courses": courses})
 				  
-
-def create_cert(request):
-    response = HttpResponse(content_type='application/pdf')
-    response['Certificate'] = 'attachment; filename="certificate.pdf"'
-    p = canvas.Canvas(response)
-    p.setFont("Times-BoldItalic", 25)
-    p.drawString(100, 700, "Congratulations!")
-    p.setFont("Helvetica", 20)
-    p.drawString(100, 650, request.user.email)
-    p.drawString(100, 600, "You passed: ")
-    p.drawString(220, 600, "Course Tile")
-    p.drawString(100, 550, "Your Score was: ")
-    p.drawString(250, 550, "100")
-    p.showPage()
-    p.save()
-    return response
-
 
 class CourseUpdate(UpdateView):
     model = Course
@@ -122,7 +106,7 @@ class QuizUpdate(QuizMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         quiz = Quiz.objects.get(pk=kwargs['pk'])
-        course = Course.objects.get(pk=quiz.course)
+        course = quiz.course
         if request.user == course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
@@ -163,7 +147,7 @@ class QuestionCreate(QuestionMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):	
         quiz = Quiz.objects.get(pk=kwargs['pk'])
-        course = Course.objects.get(pk=quiz.course)
+        course = quiz.course
         if request.user == course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
@@ -176,8 +160,7 @@ class QuestionUpdate(QuestionMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         question = Question.objects.get(pk=kwargs['pk'])
-        quiz = Quiz.objects.get(pk=question.quiz)
-        course = Course.objects.get(pk=quiz.course)
+        course = question.quiz.course
         if request.user == course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
@@ -217,8 +200,7 @@ class AnswerCreate(AnswerMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):	
         question = Question.objects.get(pk=kwargs['pk'])
-        quiz = Quiz.objects.get(pk=question.quiz)
-        course = Course.objects.get(pk=quiz.course)
+        course = question.quiz.course
         if request.user == course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
@@ -231,9 +213,7 @@ class AnswerUpdate(AnswerMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         answer = Answer.objects.get(pk=kwargs['pk'])
-        question = Question.objects.get(pk=answer.question)
-        quiz = Quiz.objects.get(pk=question.quiz)
-        course = Course.objects.get(pk=quiz.course)
+        course = answer.question.quiz.course
         if request.user == course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
@@ -257,16 +237,86 @@ class TakeQuiz(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['quiz'] = self.quiz
-        questions = Question.objects.filter(quiz=self.quiz)
-        qdict = dict()
-        for i in range(len(questions)):
-            qdict['question'+str(i)] = questions[i].answers
-        context['questions'] = qdict
+        questions = \
+            Question.objects.filter(quiz=self.quiz).prefetch_related('answers')
+        context['questions'] = questions
         return context
 
     def post(self, request, *args, **kwargs):
-        pass # BUG: need to process form data
+        CAN_RETAKE_QUIZZES = True
+        questions = self.quiz.questions.all()
+        total = len(questions)
+        score = 0
+        for question in questions:
+            answer = request.POST.get("question_{}".format(question.id), None)
+            if str(question.correct_answer_id) == str(answer):
+                score += 1
+        
+        if CAN_RETAKE_QUIZZES:
+            obj, created = Score.objects.update_or_create(user=request.user,
+                    quiz=self.quiz, value=score)
+        else:
+            Score.objects.create(user=request.user, quiz=self.quiz,
+                    value=score)
 
+        
+        response = HttpResponse(content_type='application/pdf')
+        response['Certificate'] = 'attachment; filename="certificate.pdf"'
+        p = canvas.Canvas(response)
+        p.setFont("Times-BoldItalic", 25)
+        p.drawString(100, 700, "Congratulations!")
+        p.setFont("Helvetica", 20)
+        p.drawString(100, 650, request.user.email)
+        p.drawString(100, 600, "You passed: ")
+        p.drawString(220, 600, self.quiz.course.name)
+        p.drawString(100, 550, "Your Score was: ")
+        p.drawString(250, 550, "{}%".format((score/total)*100))
+        p.showPage()
+        p.save()
+        return response
+
+
+class RegisteredCourseList(ListView):
+    template_name = 'rj2/registered_course_list.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user = request.user
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_queryset(self, *args, **kwargs):
+        qs = \
+            CourseRegistration.objects.filter(user=self.user).select_related('course')
+        return qs
+
+class CourseList(ListView):
+    template_name = 'rj2/course_list.html'
+    model = Course
+    
+class CourseDetail(TemplateView):
+    template_name = 'rj2/CourseInfo.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.course = Course.objects.get(pk=kwargs['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['course'] = self.course
+        context['linked_content'] = \
+            LinkedContent.objects.filter(course=self.course)
+        context['quizzes'] = \
+            Quiz.objects.filter(course=self.course)
+        return context
+
+
+
+@login_required
+def register_course(request, pk):
+    CourseRegistration.objects.create(user=request.user,
+            course=Course.objects.get(pk=pk))
+    return HttpResponseRedirect(reverse(course_list))
+    
+    
 
 
 add_answer = login_required(AnswerCreate.as_view())
@@ -279,4 +329,7 @@ add_quiz = login_required(QuizCreate.as_view())
 edit_quiz = login_required(QuizUpdate.as_view())
 quiz_list = login_required(QuizList.as_view())
 edit_course = login_required(CourseUpdate.as_view())
+registered_courses = login_required(RegisteredCourseList.as_view())
+course_list = login_required(CourseList.as_view())
+course_detail = login_required(CourseDetail.as_view())
 take_quiz = login_required(TakeQuiz.as_view())

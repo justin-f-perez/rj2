@@ -146,8 +146,14 @@ class Quiz(models.Model):
         return self.title
 
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz)
+    quiz = models.ForeignKey(Quiz, related_name="questions")
     text = models.TextField(blank=False, null=False)
+
+    @property
+    def correct_answer_id(self):
+        for answer in self.answers.all():
+            if answer.is_correct:
+                return answer.id
 
     def __str__(self):
         return self.text
@@ -172,5 +178,15 @@ class LinkedContent(models.Model):
 class Score(models.Model):
     user = models.ForeignKey(MyUser)
     quiz = models.ForeignKey(Quiz)
+    value = models.PositiveIntegerField()
     completed = models.DateTimeField(auto_now_add=True)
     unique_together = (user, quiz)
+
+class CourseRegistration(models.Model):
+    user = models.ForeignKey(MyUser)
+    course = models.ForeignKey(Course)
+    unique_together = (user, course)
+
+    def __str__(self):
+        return "<Registration: user={}, course={}>".format(self.user,
+                self.course)

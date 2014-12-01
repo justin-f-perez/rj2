@@ -65,9 +65,15 @@
                 </div>
                 <div>
                     <label>
-                        <a href="addQuiz.html">Add Quiz</a>
+			    <a href="{% url 'add_quiz' object.id %}">Add Quiz</a>
                     </label>
                 </div>
+		<div>
+                    <label>
+			    <a href="{% url 'quiz_list' object.id %}">Quiz List</a>
+                    </label>
+                </div>
+
                 <div class="forget">
                     <a href="{% url 'manage_courses' %}">back</a>
                 </div>

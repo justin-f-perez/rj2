@@ -18,7 +18,7 @@
                                             Course Name:
                                         </label>
                                         <label>
-                                            Theory of Compuation
+						{{ course.name }}
                                         </label>
                                     </div>
                                     <div>
@@ -26,42 +26,21 @@
                                             Description:
                                         </label>
                                         <label>
-                                            Course Description
+						{{ course.description }}
                                         </label>
                                     </div>
-                                    <div>
-                                        <label>
-                                            PDF File:
-                                        </label>
-                                        <label>
-                                            File1
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label>
-                                            PDF File:
-                                        </label>
-                                        <label>
-                                            File2
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label>
-                                            Video Links:
-                                        </label>
-                                        <label>
-                                            Link1
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label>
-                                            Video Links:
-                                        </label>
-                                        <label>
-                                            Link2
-                                        </label>
-                                    </div>
-                                </form>
+				    {% for lc in linked_content %}
+				    <div>
+					    <label> {{ lc.URL }} <label>
+				    </div>
+				    {% endfor %}
+				    <h3> Quizzes </h3>
+				    {% for quiz in quizzes %}
+				    <a href="{% url 'take_quiz' quiz.pk %}">Take Quiz: {{ quiz.title }}</a>
+				    {% endfor %}
+
+
+                                    </form>
                                 <!-- /Form -->
                             </div>
                         </div>

@@ -35,14 +35,19 @@ urlpatterns = patterns('',
         views.edit_answer, name='edit_answer'),
     #course info
     url(r'^courses/$', views.course_list, name="course_list"),
+    url(r'^registered_courses/$', views.registered_courses,
+        name="registered_courses"),
+    url(r'^courses/(?P<pk>[0-9]+)/register$', views.register_course,
+        name='register_course'),
     url(r'^courses/(?P<pk>[0-9]+)/$', views.course_detail,
         name="course_detail"),
-    url(r'^courses/(?P<pk>[0-9]+)/quizzes/$', views.course_quiz_list,
-        name="course_quiz_list"),
     #take quiz
     url(r'^take_quiz/(?P<pk>[0-9]+)/$',
         views.take_quiz, name="take_quiz"),
+)
+"""        url(r'^courses/(?P<pk>[0-9]+)/quizzes/$', views.course_quiz_list,
+        name="course_quiz_list"),
     url(r'^question/(?P<pk>[0-9]+)/$',
         views.answer_question, name="answer_question"),
-    url(r'^create_cert', views.create_cert, name="create_cert"),
-)
+    url(r'^create_cert', views.create_cert, name="create_cert"),"""
+

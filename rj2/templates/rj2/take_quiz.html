@@ -7,18 +7,26 @@
     <div class="registration">
         <div class="registration_left">
             <div class="registration_form">
+		<form method="post">
+			{% csrf_token %}
+			<input type="hidden" name="quiz_id" id="quiz_id" value="{{ quiz.id }}"/>
 		<p> 
 		{% for question in questions %}
 		{{ question.text }}
+		<br />
+		<select name="question_{{ question.id }}">
+			{% for answer in question.answers.all %}
+			<option value="{{ answer.id }}"> {{ answer.text }} </option>
+			{% endfor %}
+		</select>
+		<br />
 
 		{% endfor %}
-	</p>
+		</p>
+		<input type="submit" />
+		</form>
 
-	<br />
-	<br />
-	Go back to edit question:
 
-	<a href="{% url 'edit_question' question.pk %}"> {{ question.text }} </a>	
 
             </div>
         </div>
