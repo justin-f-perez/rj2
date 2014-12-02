@@ -7,19 +7,24 @@
     <div class="registration">
         <div class="registration_left">
             <div class="registration_form">
-		    <ul> 
+                <table class="showresult">
+                    <tr>
+                        <td>
+                            Courses
+                        </td>
+                    </tr>
 		    {% for course_registration in object_list %}
-		
-		    <li>		<a href="{% url 'course_detail' course_registration.course.pk %}">
+            <tr>
+                <td>
+		    <a href="{% url 'course_detail' course_registration.course.pk %}">
 			    {{ course_registration.course.name }}
-		</a></li>
-
-		{% endfor %}
-	</ul>
-
-
+            </a>
+                </td>
+            </tr>
+            {% endfor %}
             </div>
-
+            </form>
+            </div>
         </div>
     </div>
 </div>
