@@ -21,14 +21,15 @@ def homepage(request):
 
 @login_required
 def manage_courses(request):
-    if not request.user.is_content_manager:
-        raise PermissionDenied
-    form_class = CourseForm
-    form = form_class()
-    courses = Course.objects.filter(content_manager=request.user)
-    return render(request, "rj2/deleteCourse.html", 
-                  {"form": form, "courses": courses})
-				  
+    if request.user.is_content_manager or request.user.is_admin:    
+        form_class = CourseForm
+        form = form_class()
+        courses = Course.objects.filter(content_manager=request.user)
+        return render(request, "rj2/deleteCourse.html", 
+              {"form": form, "courses": courses})
+    else:
+        raise PermissionDenied	
+		
 class CourseUpdate(UpdateView):
     model = Course
     fields = ['name', 'description', 'fee', 'is_deprecated', 'is_active',
@@ -53,8 +54,7 @@ def add_course(request):
     form_class = CourseForm
     template_name = 'rj2/addCourse.html'
 
-    permitted = request.user.is_content_manager or \
-                request.user.is_admin
+    permitted = request.user.is_content_manager or request.user.is_admin
 
     if not permitted:
         raise PermissionDenied
