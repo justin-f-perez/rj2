@@ -39,8 +39,6 @@ urlpatterns = patterns('',
         name="registered_courses"),
     url(r'^courses/(?P<pk>[0-9]+)/register$', views.register_course,
         name='register_course'),
-    url(r'^courses/(?P<pk>[0-9]+)/drop$', views.drop_course,
-        name="drop_course"),
     url(r'^courses/(?P<pk>[0-9]+)/$', views.course_detail,
         name="course_detail"),
     #take quiz
