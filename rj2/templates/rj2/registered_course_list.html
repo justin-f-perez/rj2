@@ -19,8 +19,6 @@
 			        <a href="{% url 'course_detail' course_registration.course.pk %}">
 			            {{ course_registration.course.name }}
                     </a>  -  
-					<a href="{% url 'drop_course' course_registration.course.pk %}">
-                        Drop
                 </td>
             </tr>
             {% endfor %}
