@@ -318,6 +318,11 @@ def register_course(request, pk):
     CourseRegistration.objects.create(user=request.user,
             course=Course.objects.get(pk=pk))
     return HttpResponseRedirect(reverse(course_list))
+	
+@login_required
+def drop_course(request, pk):
+    CourseRegistration.objects.filter(pk=pk).delete()
+    return HttpResponseRedirect(reverse(course_list))
     
     
 

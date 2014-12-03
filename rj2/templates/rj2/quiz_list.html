@@ -7,21 +7,20 @@
     <div class="registration">
         <div class="registration_left">
             <div class="registration_form">
-		    <ul> 
-		    {% for quiz in object_list %}
-		
-		    <li>		<a href="{% url 'edit_quiz' quiz.pk %}">
-			    {{ quiz.title }}
-		</a></li>
-
-		{% endfor %}
-	</ul>
-
-
-            </div>
-
-	    <br />
-	    <a href="{% url 'add_quiz' course.pk %}"> Add a new Quiz </a>
+                <table class="showresult">
+                    {% for quiz in object_list %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'edit_quiz' quiz.pk %}">
+                                {{ quiz.title }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="forget" >
+                <a href="{% url 'add_quiz' course.pk %}"> Add a new Quiz </a>
+                </div>
         </div>
     </div>
 </div>
