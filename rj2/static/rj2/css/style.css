@@ -10,8 +10,6 @@ a{text-decoration:none;}
 .txt-rt{text-align:right;}/* text align right */
 .txt-lt{text-align:left;}/* text align left */
 .txt-center{text-align:center;}/* text align center */
-.float-rt{float:right;}/* float right */
-.float-lt{float:left;}/* float left */
 .clear{clear:both;}/* clear float */
 .pos-relative{position:relative;}/* Position Relative */
 .pos-absolute{position:absolute;}/* Position Absolute */
@@ -119,14 +117,16 @@ body {
 }
 
 .showresult td{
-    height:40px;
+    height:20px;
     padding:15px;
     font-size: 0.8725em;
     line-height:1.9em;
     color:  #686C70;
     margin: 4% 0;
 }
-
+.showresult td a:hover{
+    color:#76AE41;
+}
 #sddm
 {	margin: 0 auto;
     padding-top: 20px;
@@ -593,8 +593,7 @@ h4.style{
     border-bottom: 1px solid #E9E9E9;
 }
 .edit_center div{
-    float:left;
-    margin-left:50px;
+    margin-left:10px;
 }
 
 .edit_center p{
@@ -935,7 +934,6 @@ form textarea {
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	-o-border-radius: 8px;
-	float: right;
 	margin-right: 0em;
 }
 form textarea{
@@ -946,7 +944,6 @@ form input[type="submit"]{
 	color: #fff;
 	font-family: 'Microsoft yahei', sans-serif;
 	padding: 12px 30px;
-	float:right;
 	font-size:0.9em;
 	background: #1371B3;
 	border:none;

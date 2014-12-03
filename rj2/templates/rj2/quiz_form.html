@@ -12,13 +12,15 @@
                     <div>
                         <input type="submit" value="Update">
                     </div>
+                    <div class="forget" >
+                        <a href="{% url 'quiz_list' course.pk  %}">Go back to Quiz List for {{ object.course }}</a>
+                        {% if object %}
+                        <br />
+                        <a href="{% url 'question_list' object.pk %}">Question List</a>
+                        {% endif %}
+                    </div>
                 </form>
                 </div>
-		<a href="{% url 'quiz_list' course.pk  %}">Go back to Quiz List for {{ object.course }}</a>
-		{% if object %}
-		<br />
-		<a href="{% url 'question_list' object.pk %}">Question List</a>
-		{% endif %}
             </div>
         </div>
 </div>
