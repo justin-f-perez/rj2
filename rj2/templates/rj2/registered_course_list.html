@@ -10,10 +10,12 @@
 		    <ul> 
 		    {% for course_registration in object_list %}
 		
-		    <li>		<a href="{% url 'course_detail' course_registration.course.pk %}">
+		    <li><a href="{% url 'course_detail' course_registration.course.pk %}">
 			    {{ course_registration.course.name }}
-		</a></li>
-
+		    </a>  -  
+			<a href="{% url 'drop_course' course_registration.course.pk %}">
+			    Drop
+			</a></li>
 		{% endfor %}
 	</ul>
 
