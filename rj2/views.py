@@ -246,7 +246,7 @@ class TakeQuiz(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        CAN_RETAKE_QUIZZES = True
+        CAN_RETAKE_QUIZZES = False
         questions = self.quiz.questions.all()
         total = len(questions)
         score = 0
@@ -258,6 +258,10 @@ class TakeQuiz(TemplateView):
         if CAN_RETAKE_QUIZZES:
             obj, created = Score.objects.update_or_create(user=request.user,
                     quiz=self.quiz, value=score)
+        elif Score.objects.filter(user=request.user,
+                    quiz=self.quiz).exists():
+            raise Exception("Error: Cannot take the same quiz"
+                        "multple times")
         else:
             Score.objects.create(user=request.user, quiz=self.quiz,
                     value=score)
