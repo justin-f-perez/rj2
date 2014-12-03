@@ -23,7 +23,7 @@
             <ul>
 		    <li class="b"><a href="{% url 'account_logout' %}">Signout</a></li>
                 <li class="a"><h6>or</h6></li>
-		        <li><a href="edit.html">Hello, {{ user }}</a></li>
+		        <li><a href="{% url 'account_email' %}">Hello, {{ user }}</a></li>
                 <div class="clear"></div>
             </ul>
         </div>
@@ -40,8 +40,10 @@
         <ul id="sddm">
 		<li><a href="{% url 'rj2_homepage' %}">Home</a>
             </li>
-            <li><a href="#">Courses</a>
+			{% if not user.is_admin and not user.is_content_manager %}
+            <li><a href="{% url 'course_list' %}">Courses</a>
             </li>
+			{% endif %}
             <li><a href="{% url 'rj2_aboutus' %}">About us</a>
             </li>
         </ul>
