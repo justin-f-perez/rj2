@@ -16,7 +16,7 @@
 	<!---header--->
     <div class="header">
         <div class="logo">
-		<a href="index.html"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
+		<a href="{% url 'rj2_homepage' %}"><img src="{% static 'rj2/images/logo.png' %}" alt=""/></a>
         </div>
 		{% if user.is_authenticated %}
         <div class="signin">
