@@ -23,7 +23,7 @@
                                     </div>
                                     <div>
                                         <label>
-                                            Instructor/s:
+                                            Instructors:
                                         </label>
                                         <label>
 						{{ course.instructors }}
@@ -42,13 +42,14 @@
 					    <label> {{ lc.URL }} <label>
 				    </div>
 				    {% endfor %}
-				    <h3> Quizzes </h3>
+                    <div>
+                        <label> Quizzes: </label>
 				    {% for quiz in quizzes %}
-					<li>
+					<div class="forget">
 				    <a href="{% url 'take_quiz' quiz.pk %}">Take Quiz: {{ quiz.title }}</a>
-					</li>
+					</div>
 				    {% endfor %}
-
+                    </div>
 
                                     </form>
                                 <!-- /Form -->
