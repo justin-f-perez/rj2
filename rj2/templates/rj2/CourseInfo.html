@@ -36,7 +36,9 @@
 				    {% endfor %}
 				    <h3> Quizzes </h3>
 				    {% for quiz in quizzes %}
+					<li>
 				    <a href="{% url 'take_quiz' quiz.pk %}">Take Quiz: {{ quiz.title }}</a>
+					</li>
 				    {% endfor %}
 
 
