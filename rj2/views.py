@@ -28,7 +28,8 @@ def manage_courses(request):
         return render(request, "rj2/deleteCourse.html", 
               {"form": form, "courses": courses})
     else:
-        raise PermissionDenied	
+        raise PermissionDenied
+
 		
 class CourseUpdate(UpdateView):
     model = Course
@@ -88,7 +89,9 @@ class QuizMixin(View):
 
 
 class QuizCreate(QuizMixin, CreateView):
-    success_url = '/manage_courses'
+
+    def get_success_url(self):
+        return "/manage_courses/" + str(self.object.course.pk)
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -314,7 +317,6 @@ class CourseDetail(TemplateView):
         context['quizzes'] = \
             Quiz.objects.filter(course=self.course)
         return context
-
 
 
 @login_required
