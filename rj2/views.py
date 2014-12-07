@@ -305,9 +305,17 @@ class CourseList(ListView):
 class CourseDetail(TemplateView):
     template_name = 'rj2/CourseInfo.html'
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         self.course = Course.objects.get(pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
+        self.registration = \
+            CourseRegistration.objects.get(user=request.user, course=self.course)
+        self.incomplete_quizzes = []
+        quizzes = Quiz.objects.filter(course=self.course)
+        for quiz in quizzes:
+            if not Score.objects.filter(user=request.user, quiz=quiz).exists():
+                self.incomplete_quizzes.append(quiz)
+        
+        return super().dispatch(request=request, *args, **kwargs)
 		
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -316,6 +324,8 @@ class CourseDetail(TemplateView):
             LinkedContent.objects.filter(course=self.course)
         context['quizzes'] = \
             Quiz.objects.filter(course=self.course)
+        context['registration'] = self.registration
+        context['incomplete_quizzes'] = self.incomplete_quizzes
         return context
 
 
