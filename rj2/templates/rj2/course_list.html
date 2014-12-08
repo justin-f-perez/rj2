@@ -17,9 +17,9 @@
 					{% if course.is_active %}
                     <tr>
                         <td>
-                    <a href="{% url 'register_course' course.pk %}">
-                        Register for: {{ course.name }}
-                    </a>
+							<a href="{% url 'register_course' course.pk %}">
+                            Register for: {{ course.name }}
+							</a>
                         </td>
                     </tr>
 					{% endif %}
