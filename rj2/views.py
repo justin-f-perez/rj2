@@ -179,7 +179,8 @@ class QuestionUpdate(QuestionMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         self.question = Question.objects.get(pk=kwargs['pk'])
-        self.course = self.question.quiz.course
+        self.quiz = self.question.quiz
+        self.course = self.quiz.course
         if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
