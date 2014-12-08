@@ -6,7 +6,7 @@
     var count= 0 ;
     function addDoc() {
         var newDiv =  "<div id=divUpload" + count +">"
-        + " <input id=file" + count + " type=file size=50 name=upload>"
+        + " <input name='file' id=file" + count + " type=file size=50>"
         + " <a href=javascript:delUpload('divUpload" + count + "');>Delete</a>"
         + " </div>";
         count++;
@@ -21,7 +21,7 @@
     var countlink = 0;
     function addLink() {
         var newDiv =  "<div id=divUpload" + countlink +">"
-        + " Video Link: <input id=link" + countlink + " type=text size=50 name=upload>"
+        + " Video Link: <input name='video' id=link" + countlink + " type=text size=50>"
         + " <a href=javascript:dellink('divUpload" + countlink + "');>Delete</a>"
         + " </div>";
         countlink++;

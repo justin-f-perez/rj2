@@ -7,7 +7,7 @@ from django.views.generic import ListView, TemplateView, View
 from django.core.exceptions import PermissionDenied
 from rj2.forms import CourseForm
 from rj2.models import (Course, Quiz, Answer, Question, CourseRegistration,
-                       LinkedContent, Score)
+                       Video, PDF, Score)
 from reportlab.pdfgen import canvas
 from django import forms
 
@@ -45,10 +45,25 @@ class CourseUpdate(UpdateView):
         else:
             raise PermissionDenied
 
-def handle_uploaded_file(f):
-    with open('some/file/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+    def post(self, request, *args, **kwargs):
+        f = request.POST.get('file', False)
+        if f:
+            PDF.objects.create(pdf_file=f, course=self.object)
+        v = request.POST.get('video', False)
+        if v:
+            Video.objects.create(URL=v, course=self.object)
+        
+        return super().post(self, request=request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['videos'] = \
+            Video.objects.filter(course=self.course)
+        context['PDFs'] = \
+            PDF.objects.filter(course=self.course)
+        return context
+
+
 
 @login_required
 def add_course(request):
@@ -312,8 +327,10 @@ class CourseDetail(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['course'] = self.course
-        context['linked_content'] = \
-            LinkedContent.objects.filter(course=self.course)
+        context['videos'] = \
+            Video.objects.filter(course=self.course)
+        context['PDFs'] = \
+            PDF.objects.filter(course=self.course)
         context['quizzes'] = \
             Quiz.objects.filter(course=self.course)
         return context

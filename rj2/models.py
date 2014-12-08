@@ -166,18 +166,20 @@ class Answer(models.Model):
     def __str__(self):
         return self.text
 
-class LinkedContent(models.Model):
+class Video(models.Model):
     course = models.ForeignKey(Course)
     URL = models.URLField(blank=False, null=False)
-    is_video = models.BooleanField(blank=False, null=False, default=False)
-    is_document = models.BooleanField(blank=False, null=False, default=True)
 
     def __str__(self):
         return self.URL
 
-class content(models.Model):
-    course = models.ForeignKey(LinkedContent)
-    files = models.FileField(upload_to='documents/%Y/%m/%d')
+class PDF(models.Model):
+    pdf_file = models.FileField()
+    course = models.ForeignKey(Course)
+
+    def __str__(self):
+        return self.title
+
 
 class Score(models.Model):
     user = models.ForeignKey(MyUser)
