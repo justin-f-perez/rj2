@@ -93,17 +93,7 @@ class Course(models.Model):
                                    max_length=100)
     content_manager = models.ForeignKey(MyUser, related_name="managed_courses")
 
-    def is_completed(self, user):
-        """
-        Returns True if the user has completed all quizzes for this course.
-        Otherwise returns False.
-        """
-        quizzes = Quiz.objects.get(course=self)
-        for quiz in quizzes:
-            score = Score.objects.filter(user=user, quiz=quiz)
-            if not score.exists():
-                return False
-        return True
+
 
     def deprecate(self):
         """
@@ -141,7 +131,7 @@ class Course(models.Model):
 class Quiz(models.Model):
     course = models.ForeignKey(Course)
     title = models.CharField(blank=False, null=False, max_length=100)
-
+    
     def __str__(self):
         return self.title
 
@@ -192,6 +182,18 @@ class CourseRegistration(models.Model):
     user = models.ForeignKey(MyUser)
     course = models.ForeignKey(Course)
     unique_together = (user, course)
+
+    def is_completed(self):
+        """
+        Returns True if the user has completed all quizzes for this course.
+        Otherwise returns False.
+        """
+        quizzes = Quiz.objects.filter(course=self.course)
+        for quiz in quizzes:
+            score = Score.objects.filter(user=self.user, quiz=quiz)
+            if not score.exists():
+                return False
+        return True
 
     def __str__(self):
         return "<Registration: user={}, course={}>".format(self.user,
