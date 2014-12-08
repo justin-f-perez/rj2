@@ -91,7 +91,8 @@ class Course(models.Model):
     is_active = models.BooleanField(blank=False, null=False, default=False)
     instructors = models.CharField(unique=True, blank=False, null=False,
                                    max_length=100)
-    content_manager = models.ForeignKey(MyUser, related_name="managed_courses")
+    content_manager = models.ForeignKey(MyUser, related_name="managed_courses",
+            unique=False)
 
 
 

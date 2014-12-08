@@ -110,8 +110,8 @@ class QuizCreate(QuizMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def dispatch(self, request, *args, **kwargs):	
-        course = Course.objects.get(pk=kwargs['pk'])
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = Course.objects.get(pk=kwargs['pk'])
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
