@@ -258,7 +258,7 @@ class AnswerCreate(AnswerMixin, CreateView):
 
 
 class AnswerUpdate(AnswerMixin, UpdateView):
-    def get_successs_url(self):
+    def get_success_url(self):
         return "/edit_question/" + str(self.question.pk) + "/"
 
     def dispatch(self, request, *args, **kwargs):	
