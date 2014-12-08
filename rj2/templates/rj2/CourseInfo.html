@@ -51,7 +51,7 @@
 				    {% endfor %}
                     <div>
                         <label> Quizzes: </label>
-				    {% for quiz in quizzes %}
+                    {% for quiz in incomplete_quizzes %}
 					<div class="forget">
 				    <a href="{% url 'take_quiz' quiz.pk %}">Take Quiz: {{ quiz.title }}</a>
 					</div>

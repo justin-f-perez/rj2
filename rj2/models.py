@@ -93,17 +93,7 @@ class Course(models.Model):
                                    max_length=100)
     content_manager = models.ForeignKey(MyUser, related_name="managed_courses")
 
-    def is_completed(self, user):
-        """
-        Returns True if the user has completed all quizzes for this course.
-        Otherwise returns False.
-        """
-        quizzes = Quiz.objects.get(course=self)
-        for quiz in quizzes:
-            score = Score.objects.filter(user=user, quiz=quiz)
-            if not score.exists():
-                return False
-        return True
+
 
     def deprecate(self):
         """
@@ -141,7 +131,7 @@ class Course(models.Model):
 class Quiz(models.Model):
     course = models.ForeignKey(Course)
     title = models.CharField(blank=False, null=False, max_length=100)
-
+    
     def __str__(self):
         return self.title
 
@@ -166,18 +156,20 @@ class Answer(models.Model):
     def __str__(self):
         return self.text
 
-class LinkedContent(models.Model):
+class Video(models.Model):
     course = models.ForeignKey(Course)
     URL = models.URLField(blank=False, null=False)
-    is_video = models.BooleanField(blank=False, null=False, default=False)
-    is_document = models.BooleanField(blank=False, null=False, default=True)
 
     def __str__(self):
         return self.URL
 
-class content(models.Model):
-    course = models.ForeignKey(LinkedContent)
-    files = models.FileField(upload_to='documents/%Y/%m/%d')
+class PDF(models.Model):
+    pdf_file = models.FileField()
+    course = models.ForeignKey(Course)
+
+    def __str__(self):
+        return self.pdf_file.name
+
 
 class Score(models.Model):
     user = models.ForeignKey(MyUser)
@@ -190,6 +182,18 @@ class CourseRegistration(models.Model):
     user = models.ForeignKey(MyUser)
     course = models.ForeignKey(Course)
     unique_together = (user, course)
+
+    def is_completed(self):
+        """
+        Returns True if the user has completed all quizzes for this course.
+        Otherwise returns False.
+        """
+        quizzes = Quiz.objects.filter(course=self.course)
+        for quiz in quizzes:
+            score = Score.objects.filter(user=self.user, quiz=quiz)
+            if not score.exists():
+                return False
+        return True
 
     def __str__(self):
         return "<Registration: user={}, course={}>".format(self.user,

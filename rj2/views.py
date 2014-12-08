@@ -7,7 +7,7 @@ from django.views.generic import ListView, TemplateView, View
 from django.core.exceptions import PermissionDenied
 from rj2.forms import CourseForm
 from rj2.models import (Course, Quiz, Answer, Question, CourseRegistration,
-                       LinkedContent, Score)
+                       Video, PDF, Score)
 from reportlab.pdfgen import canvas
 from django import forms
 
@@ -39,16 +39,31 @@ class CourseUpdate(UpdateView):
     template_name = 'rj2/editCourse.html'
 
     def dispatch(self, request, *args, **kwargs):	
-        course = Course.objects.get(pk=kwargs['pk'])
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = Course.objects.get(pk=kwargs['pk'])
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
 
-def handle_uploaded_file(f):
-    with open('some/file/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+    def post(self, request, *args, **kwargs):
+        f = request.POST.get('file', False)
+        if f:
+            PDF.objects.create(pdf_file=f, course=self.course)
+        v = request.POST.get('video', False)
+        if v:
+            Video.objects.create(URL=v, course=self.course)
+        
+        return super().post(request=request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['videos'] = \
+            Video.objects.filter(course=self.course)
+        context['PDFs'] = \
+            PDF.objects.filter(course=self.course)
+        return context
+
+
 
 @login_required
 def add_course(request):
@@ -305,17 +320,29 @@ class CourseList(ListView):
 class CourseDetail(TemplateView):
     template_name = 'rj2/CourseInfo.html'
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         self.course = Course.objects.get(pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
+        self.registration = \
+            CourseRegistration.objects.get(user=request.user, course=self.course)
+        self.incomplete_quizzes = []
+        quizzes = Quiz.objects.filter(course=self.course)
+        for quiz in quizzes:
+            if not Score.objects.filter(user=request.user, quiz=quiz).exists():
+                self.incomplete_quizzes.append(quiz)
+        
+        return super().dispatch(request=request, *args, **kwargs)
 		
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['course'] = self.course
-        context['linked_content'] = \
-            LinkedContent.objects.filter(course=self.course)
+        context['videos'] = \
+            Video.objects.filter(course=self.course)
+        context['PDFs'] = \
+            PDF.objects.filter(course=self.course)
         context['quizzes'] = \
             Quiz.objects.filter(course=self.course)
+        context['registration'] = self.registration
+        context['incomplete_quizzes'] = self.incomplete_quizzes
         return context
 
 
