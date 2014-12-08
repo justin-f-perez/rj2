@@ -91,11 +91,6 @@ def add_course(request):
 class QuizMixin(View):
     model = Quiz
     fields = ['title']
-    
-    def dispatch(self, *args, **kwargs):
-        self.course = get_object_or_404(Course, pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
-
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -127,8 +122,8 @@ class QuizUpdate(QuizMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         quiz = Quiz.objects.get(pk=kwargs['pk'])
-        course = quiz.course
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = quiz.course
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -137,6 +132,13 @@ class QuizUpdate(QuizMixin, UpdateView):
 class QuizList(QuizMixin, ListView):
     template = 'rj2/quiz_list.html'
 
+    def dispatch(self, request, *args, **kwargs):	
+        self.course = Course.objects.get(pk=kwargs['pk'])
+        if request.user == self.course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
     def get_queryset(self, *args, **kwargs):
         return Quiz.objects.filter(course=self.course)
 
@@ -144,10 +146,6 @@ class QuizList(QuizMixin, ListView):
 class QuestionMixin(View):
     model = Question
     fields = ['text']
-
-    def dispatch(self, *args, **kwargs):
-        self.quiz = get_object_or_404(Quiz, pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -168,8 +166,8 @@ class QuestionCreate(QuestionMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):	
         quiz = Quiz.objects.get(pk=kwargs['pk'])
-        course = quiz.course
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = quiz.course
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -181,8 +179,8 @@ class QuestionUpdate(QuestionMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         question = Question.objects.get(pk=kwargs['pk'])
-        course = question.quiz.course
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = question.quiz.course
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -191,6 +189,14 @@ class QuestionUpdate(QuestionMixin, UpdateView):
 class QuestionList(QuestionMixin, ListView):
     template = 'rj2/question_list.html'
 
+    def dispatch(self, request, *args, **kwargs):	
+        quiz = Quiz.objects.get(pk=kwargs['pk'])
+        self.course = quiz.course
+        if request.user == self.course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
     def get_queryset(self, *args, **kwargs):
         return Question.objects.filter(quiz=self.quiz)
 
@@ -198,10 +204,6 @@ class QuestionList(QuestionMixin, ListView):
 class AnswerMixin(View):
     model = Answer
     fields = ['text', 'is_correct']
-
-    def dispatch(self, *args, **kwargs):
-        self.question= get_object_or_404(Question, pk=kwargs['pk'])
-        return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -221,8 +223,8 @@ class AnswerCreate(AnswerMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):	
         question = Question.objects.get(pk=kwargs['pk'])
-        course = question.quiz.course
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = question.quiz.course
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -234,8 +236,8 @@ class AnswerUpdate(AnswerMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         answer = Answer.objects.get(pk=kwargs['pk'])
-        course = answer.question.quiz.course
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = answer.question.quiz.course
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -243,6 +245,14 @@ class AnswerUpdate(AnswerMixin, UpdateView):
 
 class AnswerList(AnswerMixin, ListView):
     template = 'rj2/answer_list.html'
+
+    def dispatch(self, request, *args, **kwargs):	
+        question = Question.objects.get(pk=kwargs['pk'])
+        self.course = question.quiz.course
+        if request.user == self.course.content_manager or request.user.is_admin:
+            return super().dispatch(request=request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
     def get_queryset(self, *args, **kwargs):
         return Answer.objects.filter(question=self.question)
