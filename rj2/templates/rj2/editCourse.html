@@ -6,7 +6,7 @@
     var count= 0 ;
     function addDoc() {
         var newDiv =  "<div id=divUpload" + count +">"
-        + " <input name='file' id=file" + count + " type=file size=50>"
+        + " <input name='file' id='file'" + count + " type='file' size=50>"
         + " <a href=javascript:delUpload('divUpload" + count + "');>Delete</a>"
         + " </div>";
         count++;
@@ -46,7 +46,7 @@
 	<div class="registration_left">
 		 <div class="registration_form">
 		 <!-- Form -->
-			<form id="registration_form" action="" method="post">
+		 <form id="registration_form" action="" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 				{{ form.as_p }}
 		{% for pdf in PDFs %}

@@ -46,9 +46,9 @@ class CourseUpdate(UpdateView):
             raise PermissionDenied
 
     def post(self, request, *args, **kwargs):
-        f = request.POST.get('file', False)
-        if f:
-            PDF.objects.create(pdf_file=f, course=self.course)
+        for key in request.FILES:
+            f = request.FILES[key]
+            pdf = PDF.objects.create(pdf_file=f, course=self.course)
         v = request.POST.get('video', False)
         if v:
             Video.objects.create(URL=v, course=self.course)
