@@ -37,6 +37,13 @@
 						{{ course.description }}
                                         </label>
                                     </div>
+                        {% if course.is_deprecated %}
+									<div>
+                                        <label style="color: red">
+						                 This course will be closing soon!
+                                        </label>
+                                    </div>
+						{% endif %}
 				    {% for lc in linked_content %}
 				    <div>
 					    <label> {{ lc.URL }} <label>
