@@ -3,27 +3,26 @@
 {% block content %}
 
 <div class="edit_center">
-	<h3>Course List</h3>
+	<h3>My Course List</h3>
     <div class="registration">
         <div class="registration_left">
             <div class="registration_form">
                 <table class="showresult">
                     <tr>
                         <td>
-                            Courses
+                            My Courses
                         </td>
                     </tr>
-		    {% for course_registration in object_list %}   
-            <tr>
-                <td>
-			        <a href="{% url 'course_detail' course_registration.course.pk %}">
-			            {{ course_registration.course.name }}
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-            </div>
-            </form>
+                    {% for course_registration in object_list %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'course_detail' course_registration.course.pk %}">
+                                {{ course_registration.course.name }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </table>
             </div>
         </div>
     </div>

@@ -1,13 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-tra/Users/ramble0408/Desktop/rj2/rj2/templates/account/login.htmlnsitional.dtd">
 {% extends "rj2/base.html" %}
 {% block head_title %}Home{% endblock %}
 {% block content %}
 <!-- start main -->
-<div class="top_bg">
-<div class="main_top">
-	<h4 class="style">create an account or login</h4>
-</div>
-</div>
 <div class="main_bg">
 <div class="main">
 	<div class="login_left">
@@ -33,11 +28,9 @@
                 {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
-				<div>
-					<input type="submit" value="sign in" id="register-submit">
-				</div>
 				<div class="forget">
 					<a href="{% url 'account_reset_password' %}">forgot your password</a>
+                    <input type="submit" value="sign in" id="register-submit">
 				</div>
 			</form>
 			<!-- /Form -->
