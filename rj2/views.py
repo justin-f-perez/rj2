@@ -178,8 +178,8 @@ class QuestionUpdate(QuestionMixin, UpdateView):
         return "/edit_question/" + str(self.object.pk) + "/"
 
     def dispatch(self, request, *args, **kwargs):	
-        question = Question.objects.get(pk=kwargs['pk'])
-        self.course = question.quiz.course
+        self.question = Question.objects.get(pk=kwargs['pk'])
+        self.course = self.question.quiz.course
         if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
