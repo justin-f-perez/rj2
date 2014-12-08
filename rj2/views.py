@@ -165,8 +165,8 @@ class QuestionCreate(QuestionMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def dispatch(self, request, *args, **kwargs):	
-        quiz = Quiz.objects.get(pk=kwargs['pk'])
-        self.course = quiz.course
+        self.quiz = Quiz.objects.get(pk=kwargs['pk'])
+        self.course = self.quiz.course
         if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
