@@ -37,6 +37,14 @@
 						{{ course.description }}
                                         </label>
                                     </div>
+                		    {% for pdf in PDFs %}
+		                    <div>
+					<a href="{{ pdf.pdf_file.url }}">{{ pdf.pdf_file.name }}</a>
+				    </div>
+				    {% endfor %}
+                	            {% for video in videos %}
+		                    <iframe width="560" height="315" src="{{ video.URL }}" frameborder="0" allowfullscreen></iframe>
+				    {% endfor %}
 				    {% for lc in linked_content %}
 				    <div>
 					    <label> {{ lc.URL }} <label>

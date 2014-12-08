@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin, auth
 from rj2 import views
+from rj2 import settings
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
@@ -46,9 +47,9 @@ urlpatterns = patterns('',
         views.take_quiz, name="take_quiz"),
 #    url(r'serve_pdf/(?P<pk>[0-9]+)/$', views.serve_pdf, name="serve_pdf"),
 )
-"""        url(r'^courses/(?P<pk>[0-9]+)/quizzes/$', views.course_quiz_list,
-        name="course_quiz_list"),
-    url(r'^question/(?P<pk>[0-9]+)/$',
-        views.answer_question, name="answer_question"),
-    url(r'^create_cert', views.create_cert, name="create_cert"),"""
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.MEDIA_ROOT}))
 
