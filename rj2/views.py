@@ -75,7 +75,7 @@ class CourseUpdate(UpdateView):
                     if correct < 1 or correct > 1:
                         raise Exception("Error: There must be one, and only "
                                 "one correct answer per question. '{}' had "
-                                "multiple correct"
+                                "either zero or multiple correct"
                                 " answers.".format(question.text))
 
         
