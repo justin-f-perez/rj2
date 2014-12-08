@@ -326,6 +326,15 @@ class RegisteredCourseList(ListView):
 class CourseList(ListView):
     template_name = 'rj2/course_list.html'
     model = Course
+	
+    def get_queryset(self, *args, **kwargs):
+        registered = CourseRegistration.objects.filter(user=self.user);
+        courses = Course.objects.exclude(id__in=[c.id for c in registered]);
+        return courses
+		
+    def dispatch(self, request, *args, **kwargs):
+        self.user = request.user
+        return super().dispatch(request, *args, **kwargs)
     
 class CourseDetail(TemplateView):
     template_name = 'rj2/CourseInfo.html'
