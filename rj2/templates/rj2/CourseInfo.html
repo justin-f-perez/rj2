@@ -54,12 +54,15 @@
                 	            {% for video in videos %}
 		                    <iframe width="560" height="315" src="{{ video.URL }}" frameborder="0" allowfullscreen></iframe>
 				    {% endfor %}
+<<<<<<< HEAD
 >>>>>>> cb2c0fb31bd5833649c21a26d5b231c27d479c9a
 				    {% for lc in linked_content %}
 				    <div>
 					    <label> {{ lc.URL }} <label>
 				    </div>
 				    {% endfor %}
+=======
+>>>>>>> d3e1fd64537c7c0b396d2d88cf10b1ccb296d73a
                     <div>
                         <label> Quizzes: </label>
                     {% for quiz in incomplete_quizzes %}
@@ -68,7 +71,10 @@
 					</div>
 				    {% endfor %}
                     </div>
+		    {% if registration.is_complete %}
 
+		    <a href="{% url 'show_cert' course.id %}">Show Certificate</a>
+		    {% endif %}
                                     </form>
                                 <!-- /Form -->
                             </div>

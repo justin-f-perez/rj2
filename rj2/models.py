@@ -183,7 +183,7 @@ class CourseRegistration(models.Model):
     course = models.ForeignKey(Course)
     unique_together = (user, course)
 
-    def is_completed(self):
+    def is_complete(self):
         """
         Returns True if the user has completed all quizzes for this course.
         Otherwise returns False.

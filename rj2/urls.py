@@ -45,6 +45,8 @@ urlpatterns = patterns('',
     #take quiz
     url(r'^take_quiz/(?P<pk>[0-9]+)/$',
         views.take_quiz, name="take_quiz"),
+    url(r'^show_cert/(?P<course_id>[0-9]+)/$',
+        views.show_cert, name="show_cert")
 #    url(r'serve_pdf/(?P<pk>[0-9]+)/$', views.serve_pdf, name="serve_pdf"),
 )
 
