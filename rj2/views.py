@@ -121,8 +121,8 @@ class QuizUpdate(QuizMixin, UpdateView):
     success_url = '/manage_courses'
 
     def dispatch(self, request, *args, **kwargs):	
-        quiz = Quiz.objects.get(pk=kwargs['pk'])
-        self.course = quiz.course
+        self.quiz = Quiz.objects.get(pk=kwargs['pk'])
+        self.course = self.quiz.course
         if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
@@ -235,8 +235,8 @@ class AnswerUpdate(AnswerMixin, UpdateView):
         return "/edit_question/" + str(self.question.pk) + "/"
 
     def dispatch(self, request, *args, **kwargs):	
-        answer = Answer.objects.get(pk=kwargs['pk'])
-        self.course = answer.question.quiz.course
+        self.answer = Answer.objects.get(pk=kwargs['pk'])
+        self.course = self.answer.question.quiz.course
         if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
