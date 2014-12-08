@@ -296,7 +296,7 @@ class TakeQuiz(TemplateView):
 
         
         response = HttpResponseRedirect(reverse(course_detail,
-            kwargs={'pk':self.quiz.course}))
+            kwargs={'pk':self.quiz.course.id}))
 
         return response
 
