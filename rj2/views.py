@@ -39,8 +39,8 @@ class CourseUpdate(UpdateView):
     template_name = 'rj2/editCourse.html'
 
     def dispatch(self, request, *args, **kwargs):	
-        course = Course.objects.get(pk=kwargs['pk'])
-        if request.user == course.content_manager or request.user.is_admin:
+        self.course = Course.objects.get(pk=kwargs['pk'])
+        if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -48,12 +48,12 @@ class CourseUpdate(UpdateView):
     def post(self, request, *args, **kwargs):
         f = request.POST.get('file', False)
         if f:
-            PDF.objects.create(pdf_file=f, course=self.object)
+            PDF.objects.create(pdf_file=f, course=self.course)
         v = request.POST.get('video', False)
         if v:
-            Video.objects.create(URL=v, course=self.object)
+            Video.objects.create(URL=v, course=self.course)
         
-        return super().post(self, request=request, *args, **kwargs)
+        return super().post(request=request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

@@ -49,6 +49,11 @@
 			<form id="registration_form" action="" method="post">
 			{% csrf_token %}
 				{{ form.as_p }}
+		{% for pdf in PDFs %}
+		<div>
+			<a href="{{ pdf.pdf_file.url }}">{{ pdf.pdf_file.name }}</a>
+		</div>
+		{% endfor %}
                 <div>
                     <label>
                         <a href="javascript:addDoc()">Add Documents</a>
@@ -56,6 +61,9 @@
                         </div>
                     </label>
                 </div>
+		{% for video in videos %}
+		<iframe width="560" height="315" src="{{ video.URL }}" frameborder="0" allowfullscreen></iframe>
+		{% endfor %}
                 <div>
                     <label>
                         <a href="javascript:addLink()">Add Video Link</a>

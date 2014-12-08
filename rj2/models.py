@@ -168,7 +168,7 @@ class PDF(models.Model):
     course = models.ForeignKey(Course)
 
     def __str__(self):
-        return self.title
+        return self.pdf_file.name
 
 
 class Score(models.Model):
