@@ -22,6 +22,8 @@
 	Go back to edit question:
 
 	<a href="{% url 'edit_question' question.pk %}"> {{ question.text }} </a>	
+	<br />
+	<a href="{% url 'add_answer' question.pk %}"> Add Answer </a>
 
             </div>
         </div>

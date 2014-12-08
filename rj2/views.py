@@ -52,6 +52,32 @@ class CourseUpdate(UpdateView):
         v = request.POST.get('video', False)
         if v:
             Video.objects.create(URL=v, course=self.course)
+
+        if request.POST.get('is_active', False):
+            quizzes = Quiz.objects.filter(course=self.course)
+            if len(quizzes) < 1:
+                raise Exception("Must have at least one quiz to"
+                                " activate/release a course.")
+            for quiz in quizzes:
+                questions = Question.objects.filter(quiz=quiz)
+                if len(questions) < 1:
+                    raise Exception("Error: Quiz titled '{}' did not have any"
+                                    " questions".format(quiz.title))
+                for question in questions:
+                    correct = 0
+                    answers = Answer.objects.filter(question=question)
+                    if len(answers) < 2:
+                        raise Exception("Error: Question '{}' did not have"
+                            " at least two answers".format(question.text))
+                    for answer in answers:
+                        if answer.is_correct:
+                            correct += 1
+                    if correct < 1 or correct > 1:
+                        raise Exception("Error: There must be one, and only "
+                                "one correct answer per question. '{}' had "
+                                "multiple correct"
+                                " answers.".format(question.text))
+
         
         return super().post(request=request, *args, **kwargs)
 
