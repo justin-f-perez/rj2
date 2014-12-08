@@ -237,7 +237,8 @@ class AnswerUpdate(AnswerMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):	
         self.answer = Answer.objects.get(pk=kwargs['pk'])
-        self.course = self.answer.question.quiz.course
+        self.question = self.answer.question
+        self.course = self.question.quiz.course
         if request.user == self.course.content_manager or request.user.is_admin:
             return super().dispatch(request=request, *args, **kwargs)
         else:
