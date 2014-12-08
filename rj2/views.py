@@ -295,20 +295,11 @@ class TakeQuiz(TemplateView):
                     value=(score/total)*100)
 
         
-        response = HttpResponse(content_type='application/pdf')
-        response['Certificate'] = 'attachment; filename="certificate.pdf"'
-        p = canvas.Canvas(response)
-        p.setFont("Times-BoldItalic", 25)
-        p.drawString(100, 700, "Congratulations!")
-        p.setFont("Helvetica", 20)
-        p.drawString(100, 650, request.user.email)
-        p.drawString(100, 600, "You passed: ")
-        p.drawString(220, 600, self.quiz.course.name)
-        p.drawString(100, 550, "Your Score was: ")
-        p.drawString(250, 550, "{}%".format((score/total)*100))
-        p.showPage()
-        p.save()
+        response = HttpResponseRedirect(reverse(course_detail,
+            kwargs={'pk':self.quiz.course}))
+
         return response
+
 
 
 class RegisteredCourseList(ListView):
