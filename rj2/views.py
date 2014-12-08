@@ -285,14 +285,14 @@ class TakeQuiz(TemplateView):
         
         if CAN_RETAKE_QUIZZES:
             obj, created = Score.objects.update_or_create(user=request.user,
-                    quiz=self.quiz, value=score)
+                    quiz=self.quiz, value=(score/total)*100)
         elif Score.objects.filter(user=request.user,
                     quiz=self.quiz).exists():
             raise Exception("Error: Cannot take the same quiz"
                         "multple times")
         else:
             Score.objects.create(user=request.user, quiz=self.quiz,
-                    value=score)
+                    value=(score/total)*100)
 
         
         response = HttpResponse(content_type='application/pdf')
@@ -334,11 +334,13 @@ class CourseDetail(TemplateView):
         self.course = Course.objects.get(pk=kwargs['pk'])
         self.registration = \
             CourseRegistration.objects.get(user=request.user, course=self.course)
+        print("Registration is complete? {}".format(self.registration.is_complete))
         self.incomplete_quizzes = []
         quizzes = Quiz.objects.filter(course=self.course)
         for quiz in quizzes:
             if not Score.objects.filter(user=request.user, quiz=quiz).exists():
                 self.incomplete_quizzes.append(quiz)
+        print("{}".format(self.incomplete_quizzes))
         
         return super().dispatch(request=request, *args, **kwargs)
 		
@@ -361,6 +363,32 @@ def register_course(request, pk):
     CourseRegistration.objects.create(user=request.user,
             course=Course.objects.get(pk=pk))
     return HttpResponseRedirect(reverse(course_list))
+
+@login_required
+def show_cert(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    quizzes = Quiz.objects.filter(course=course)
+    scores = []
+    for quiz in quizzes:
+        scores.extend(Score.objects.filter(user=request.user,
+            quiz=quiz).all())
+    score_list = ["{}%".format(s.value) for s in scores]
+    score_string = ", ".join(score_list)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Certificate'] = 'attachment; filename="certificate.pdf"'
+    p = canvas.Canvas(response)
+    p.setFont("Times-BoldItalic", 25)
+    p.drawString(100, 700, "Congratulations!")
+    p.setFont("Helvetica", 20)
+    p.drawString(100, 650, request.user.email)
+    p.drawString(100, 600, "You passed: ")
+    p.drawString(220, 600, course.name)
+    p.drawString(100, 550, "Quiz Scores: ")
+    p.drawString(250, 550, score_string)
+    p.showPage()
+    p.save()
+    return response
 
     
     
