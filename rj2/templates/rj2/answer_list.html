@@ -3,28 +3,25 @@
 {% block content %}
 
 <div class="edit_center">
-    <h3>Answer List</h3>
+    <h3>Answer List For {{ question.text }}</h3>
     <div class="registration">
         <div class="registration_left">
             <div class="registration_form">
-		    <ul> 
 		    {% for answer in object_list %}
-		
-		    <li>		<a href="{% url 'edit_answer' answer.pk %}">
+            <div class="forget">
+            <a href="{% url 'edit_answer' answer.pk %}">
 			    {{ answer.text }}
-		</a></li>
-
+            </a>
+            </div>
 		{% endfor %}
 	</ul>
 
 	<br />
-	<br />
-	Go back to edit question:
-
-	<a href="{% url 'edit_question' question.pk %}"> {{ question.text }} </a>	
-	<br />
-	<a href="{% url 'add_answer' question.pk %}"> Add Answer </a>
-
+	<div class="forget">Go back to edit question:<a href="{% url 'edit_question' question.pk %}"> {{ question.text }} </a>
+    <div/>
+    <div class="forget">
+        <a href="{% url 'add_answer' question.pk %}">Add New Answer </a>
+    </div>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@
 		{% for question in questions %}
 		{{ question.text }}
 		<br />
-		<select name="question_{{ question.id }}">
+		<select class="select" name="question_{{ question.id }}">
 			{% for answer in question.answers.all %}
 			<option value="{{ answer.id }}"> {{ answer.text }} </option>
 			{% endfor %}

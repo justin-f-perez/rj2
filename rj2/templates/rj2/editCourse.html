@@ -54,7 +54,7 @@
 			<a href="{{ pdf.pdf_file.url }}">{{ pdf.pdf_file.name }}</a>
 		</div>
 		{% endfor %}
-                <div>
+                <div class="forget">
                     <label>
                         <a href="javascript:addDoc()">Add Documents</a>
                         <div id="uploadContent">
@@ -64,26 +64,22 @@
 		{% for video in videos %}
 		<iframe width="560" height="315" src="{{ video.URL }}" frameborder="0" allowfullscreen></iframe>
 		{% endfor %}
-                <div>
+                <div class="forget">
                     <label>
                         <a href="javascript:addLink()">Add Video Link</a>
                         <div id="uploadLink">
                         </div>
                     </label>
                 </div>
-                <div>
+                <div class="forget">
                     <label>
                         <a href="{% url 'add_quiz' object.id %}">Add Quiz</a>
                     </label>
                 </div>
-                <div>
+                <div class="forget">
                     <label>
                         <a href="{% url 'quiz_list' object.id %}">Quiz List</a>
                     </label>
-                </div>
-
-                <div class="forget">
-                    <a href="{% url 'manage_courses' %}">back</a>
                 </div>
 				<div>
 					<input type="submit" value="Save" id="save-submit">
